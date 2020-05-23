@@ -1,0 +1,159 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+ 
+#define MAX_STACK_SIZE 100		/* 최대 스택 크기 */
+typedef enum { lparen, rparen, plus, minus, times, divide,
+mod, eos, operand } precedence ;		//enum은 새로운 데이터형을 만드는 면에서 struct와 union과 비슷. 
+										//새로운 형이 가질 수 있는 값의 범위를 열거상수로 제한한다는 점이 다름. 
+typedef precedence element;
+ 
+precedence stack[MAX_STACK_SIZE];
+int top = -1;
+ 
+/* isp와 icp 배열 -- 인덱스는 연산자 lparen, rparen,
+plus, minus, times, divide, mod, eos의 우선순위 값 */
+static int isp[] = { 0, 19, 12, 12, 13, 13, 13, 0 };
+static int icp[] = { 20, 19, 12, 12, 13, 13, 13, 0 };
+
+char expr[100];
+ 
+precedence getToken (char *symbol, int * n);
+void postfix(void);
+int eval(void);
+void add(int *top, element item);
+element pop(int *top);
+ 
+int main(void)
+{
+	printf("중위표기식을 입력하고 #을 입력합니다.  (예시) 8/2-(4-1)+3*2-(9-5)#\n");
+	printf("입력 : ");
+	scanf("%s", expr);
+	printf("후위표기식 : ");
+	postfix();
+	printf ("계산값 :%d\n", eval());
+	return 0;
+}
+  
+int eval(void)	 /* 전역 변수로 되어 있는 후위 표기식 expr을 연산한다 */
+{ 	
+	precedence token;
+	char symbol;
+	int op1, op2;
+	int n = 0; 	/* 수식 문자열을 위한 카운터 */
+	int top = -1;
+	token = getToken(&symbol, &n);
+	while (token != eos) {
+		if (token == operand)
+			add(&top, symbol - '0'); 
+		else 
+		{	/* 두 피연산자를 삭제하여 연산을 수행한 후, 그 결과를 스택에 삽입함 */
+			op2 = pop(&top);
+			op1 = pop(&top);
+			
+			switch (token) {
+							case plus: add(&top, op1 + op2); break;
+							case minus: add(&top, op1 - op2); break;
+							case times: add(&top, op1 * op2); break;
+							case divide:add(&top, op1 / op2); break;
+							case mod: add(&top, op1 % op2); break;
+			}
+		}
+		token = getToken(&symbol, &n);
+	}
+	return pop(&top);
+}
+ 
+precedence getToken (char *symbol, int * n)	/* 다음 토큰을 취한다. symbol은 문자 표현이며,
+											token은 그것의 열거된 값으로 표현되고, 명칭으로 반환된다. */
+{
+	
+	*symbol = expr[(*n)++];
+	
+	switch (*symbol){
+					case '(' : return lparen;
+					case ')' : return rparen;
+					case '+' : return plus;
+					case '-' : return minus;
+					case '/' : return divide;
+					case '*' : return times;
+					case '%' : return mod;	
+					case '#' : return eos;
+					default : return operand;
+					}
+}
+ 
+ 
+// 변환 부분
+void printToken(precedence token);
+char post_expr[100];
+void postfix(void)
+{
+	char symbol;
+	precedence token;
+	int n = 0;
+	int top = 0;
+	stack[0] = eos; 	for (token = getToken(&symbol, &n); token != eos; token = getToken(&symbol, &n)) {
+		
+		if (token == operand)
+			printToken(symbol);
+		else if (token == rparen) {
+			/* 왼쪽 괄호가 나올 때까지 토큰들을 제거해서 출력 */
+			while (stack[top] != lparen)
+				printToken(pop(&top));
+			pop(&top); 
+		}
+		else{
+			/* symbol의 isp가 token의 icp보다 크거나 같으면 symbol을 제거하고 출력 */			
+			while (isp[stack[top]] >= icp[token])
+				printToken(pop(&top));
+			add(&top, token);
+		}
+	}
+	while ((token = pop(&top)) != eos)
+		printToken(token);
+	printToken(eos);
+ 
+	strcpy(expr, post_expr);
+	puts(expr);
+}
+ 
+void printToken(precedence token)
+{
+	static int index = 0;
+	char aChar;
+ 
+	switch (token) {
+					case plus : aChar = '+'; break;
+					case minus : aChar = '-'; break;
+					case divide : aChar = '/'; break;
+					case times : aChar = '*'; break;
+					case mod : aChar = '%'; break;
+					case eos : aChar = '#'; break;
+					default : aChar = token;
+					}
+ 
+	post_expr[index++] = aChar;
+}
+ 
+
+void add(int *top, element item)
+{
+	/* 전역 스택에 item을 삽입 */
+	if (*top >= MAX_STACK_SIZE - 1) 
+	{
+		printf("Stack is full!\n");
+ 		exit(1);
+	}
+	stack[++*top] = item;
+}
+ 
+element pop(int *top)
+{	
+	if (*top == -1)
+	{
+		printf("Stack is empty!\n");
+ 		exit(1);
+ 	}
+	return stack[(*top)--];		/* stack의 최상위 원소를 반환 */
+}
