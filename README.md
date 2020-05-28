@@ -7,4 +7,4 @@
 
 Developing now "교수의 모험"
 
-If you have a new idea, please update the Project concept.txt
+If you have a new idea, please update the Project Concept.txt
