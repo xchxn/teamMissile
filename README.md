@@ -7,4 +7,4 @@
 
 Developing now "교수의 모험"
 
-추가) 전투시작시 소리
+If you have a new idea, please update the Project concept.txt
