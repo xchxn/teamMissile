@@ -1,4 +1,4 @@
-# Project team "Missile"
+# Team "Missile"
 
 ### JBNU IT 201912388오준혁
 ### JBNU IT 201515300장우석
