@@ -12,9 +12,9 @@
 
 #### Intro 
 C언어 콘솔 기반 2D 횡스크롤 게임
-
-For more information, please see Project Concept.txt
-
+### Progress
 |Week 1 | Online Meeting |
 | :------------ | :---------- |
 | We make a decision for project content | &#9745; |
+
+###### For more information, please see Project Concept.txt
