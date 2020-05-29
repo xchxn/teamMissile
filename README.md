@@ -17,4 +17,4 @@ C++ 콘솔 기반 2D 횡스크롤 게임
 | :------------ | :---------- |
 | We make a decision for project content | &#9745; |
 
-###### For more information, please see Project Concept.txt
+###### For more information, please see https://github.com/seokyeo/teamMissile/blob/master/Project%20Concept.txt
