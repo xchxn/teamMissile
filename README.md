@@ -10,4 +10,7 @@
 #### Intro 
 C언어 콘솔 기반 2D 횡스크롤 게임
 
+
+
+
 If you have a new idea, please update the Project Concept.txt
