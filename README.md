@@ -8,12 +8,13 @@
 | 201912388 | 201515300 | 201918800 |201912430 |
 
 
-
 #### Developing now  :european_castle: 교수의 모험 :european_castle:
 
 #### Intro 
 C언어 콘솔 기반 2D 횡스크롤 게임
 
+For more information, please see Project Concept.txt
 
-
-For more information, see: Project Concept.txt
+|Week 1 | Online Meeting |
+| :------------ | :---------- |
+| We make a decision for project content | &#9745; |
