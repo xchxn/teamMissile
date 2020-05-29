@@ -1,14 +1,15 @@
 ![jbnu_logo](https://user-images.githubusercontent.com/65169722/83265660-c2c8ee00-a1fc-11ea-8f67-d42cabce63a4.png) ![IT_logo](https://user-images.githubusercontent.com/65169722/83266051-4551ad80-a1fd-11ea-9776-3af3ad784981.PNG)
 
 
-# Team "Missile"
+## Team Missile :rocket:
 
-### JBNU IT 201912388오준혁
-### JBNU IT 201515300장우석
-### JBNU IT 201918800정석찬
-### JBNU IT 201912430조민서
+| 오준혁 | 장우석 | 정석찬 | 조민서 |
+:------------ | :-------------| :-------------| :------------- |
+| 201912388 | 201515300 | 201918800 |201912430 |
 
-#### Developing now "교수의 모험"
+
+
+#### Developing now  :european_castle: 교수의 모험 :european_castle:
 
 #### Intro 
 C언어 콘솔 기반 2D 횡스크롤 게임
