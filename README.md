@@ -11,7 +11,7 @@
 #### Developing now  :european_castle: 교수의 모험 :european_castle:
 
 #### Intro 
-C언어 콘솔 기반 2D 횡스크롤 게임
+C++ 콘솔 기반 2D 횡스크롤 게임
 ### Progress
 |Week 1 | Online Meeting |
 | :------------ | :---------- |
