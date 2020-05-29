@@ -1,3 +1,5 @@
+![jbnu_logo](https://user-images.githubusercontent.com/65169722/83265660-c2c8ee00-a1fc-11ea-8f67-d42cabce63a4.png)
+
 # Team "Missile"
 
 ### JBNU IT 201912388오준혁
