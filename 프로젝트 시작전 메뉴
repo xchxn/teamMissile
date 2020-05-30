@@ -18,7 +18,6 @@ public:
 	}
 	cout << "\n\n\t\t\t        press start\n\n";
 	getchar();
-	system("cls"); // enter 입력후 콘솔창 넘어가기 
-	cout << "여기다 교수의모험 메인메뉴 만들기";	
+	system("cls"); // enter 입력후 콘솔창 넘어가기 	
 	}	
 };
