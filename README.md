@@ -12,7 +12,7 @@
 #### Intro 
 C++ 콘솔 기반 2D 횡스크롤 게임
 ### Progress
-|Week 1 | Online Meeting |
+|Week 1 (~6.1) | Online Meeting |
 | :------------ | :---------- |
 | We make a decision for project content | &#9745; |
 
