@@ -21,4 +21,8 @@ C++ 콘솔 기반 2D 횡스크롤 게임
 | :------------ | :---------- |
 | Detailing concept making | &#9745; |
 
+|Week 3 (~6.15) | Online Meeting |
+| :------------ | :---------- |
+| Study for our game | &#9745; |
+
 ###### :question: For more information about our game, please see https://github.com/seokyeo/teamMissile/blob/master/Project%20Concept.txt
