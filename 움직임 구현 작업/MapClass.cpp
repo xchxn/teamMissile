@@ -30,10 +30,10 @@ class Map		//★나중에 이 클래스 상속해서 추가적으로 다른 맵 만들수 있도록 수정할
 		}
 		
 		void Drawfigure(int x, int y, int size_x, int size_y, char figure[])	//EditMap함수를 for문 처리해서 x,y좌표를 넣으면 해당 좌표를 기준으로 size_x,size_y크기의 맵을 수정
-		{
-			for (int i = 0; i < size_y; i++)		//3개 열을 수정 
+		{																		//캐릭터가 size_x*size_y크기로 표현 될 예정. 
+			for (int i = 0; i < size_y; i++)		//size_y개 열을 수정 
 			{
-				for (int j = 0; j < size_x; j++)		//3개 행을 수정
+				for (int j = 0; j < size_x; j++)		//size_x개 행을 수정
 					EditMap(x + j, y + i, figure[i * size_x + j]);		//i*size_x는 1행,2행,3행을 표현. j는 열을 표현.
 			}
 		}
