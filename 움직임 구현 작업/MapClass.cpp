@@ -1,9 +1,9 @@
-class Map
+class Map		//★나중에 이 클래스 상속해서 추가적으로 다른 맵 만들수 있도록 수정할 예정 
 {	
 	private :
-		char ground[MAP_X_MAX];					
-		char mapData[MAP_X_MAX * MAP_Y_MAX];	 
-												 
+		char ground[MAP_X_MAX];				//땅을 표현할 일차원 배열 	
+		char mapData[MAP_X_MAX * MAP_Y_MAX];	 //1차원 배열을 가로크기MAP_X_MAX * 세로크기 MAP_Y_MAX로 표현. mapData를 지속적으로 출력함으로써 게임 움직임 구현. 
+												 //주의점 : 콘송창 크기를 동일하게 배열의 크기와 동일하게 해야만 제대로 된 모양으로 출력됌.
 	public :
 		Map()
 		{	
