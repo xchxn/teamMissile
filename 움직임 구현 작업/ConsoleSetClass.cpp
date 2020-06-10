@@ -1,3 +1,5 @@
+#include <windows.h>	//이 헤더파일 필요! 
+
 class ConsoleSet		//콘솔창 설정 클래스.
 {
 	public : 
@@ -15,11 +17,11 @@ class ConsoleSet		//콘솔창 설정 클래스.
 		    SetConsoleCursorInfo(hConsole , &ConsoleCursor);
 		}
 		
-		static void gotoxy(short m_x, short m_y) 		//ConsloeSet::gotoxy 형식으로 쓸수 있도록 static 함수로 선언 
-		{//커서이동함수
+		static void gotoxy(short _x, short _y) 		//ConsloeSet::gotoxy 형식으로 쓸수 있도록 static 함수로 선언.  _x,_y 좌표로 커서 이동 
+		{
         COORD Cur;
-        Cur.X = m_x;
-        Cur.Y = m_y;
+        Cur.X = _x;
+        Cur.Y = _y;
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Cur);
     	}
 };
