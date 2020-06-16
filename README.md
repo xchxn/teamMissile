@@ -7,7 +7,7 @@
 | 201912388 | 201515300 | 201918800 | 201912430 |
 
 
-#### Developing now  :european_castle: 교수의 모험 :european_castle:
+#### Developing now 교수의 모험 :european_castle:
 
 #### Intro 
 C++ 콘솔 기반 2D 횡스크롤 게임
