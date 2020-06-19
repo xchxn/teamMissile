@@ -12,7 +12,38 @@ class Character
 	    float t_jump;		//중력 구현할 변수 
 	    
 	public :
-		Character();	//private 변수들 초기화 예정 
+		Character()		//생성자로 초기값 설정 
+		{
+			x = MAP_X_MAX / 2 + 1;
+			y = MAP_Y_MAX / 2 + 1;
+			size_x = 3;
+			size_y = 3;
+			
+			//초기 캐릭터 모양 (3*3) 
+			figure[0] = ' ';
+			figure[1] = '0';
+			figure[2] = ' ';
+			figure[3] = '(';
+			figure[4] = '|';
+			figure[5] = ')';
+			figure[6] = '_';
+			figure[7] = '^';
+			figure[8] = '_';
+			figure[9] = '\0';
+			
+			name[0] = 'M';
+			name[1] = 'r';
+			name[2] = '.';
+			name[3] = 'S';
+			name[4] = 'o';
+			name[5] = 'n';
+			name[6] = 'g';
+			name[7] = '\0';
+			direction = TRUE;
+			t_jump = 2;
+		    leg_m = 1;				
+		    t_leg = 0;
+		}
 		void ControlCharacter();
 		
 		//private영역에 있는 변수들 리턴
