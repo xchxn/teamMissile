@@ -1,6 +1,6 @@
 Map class 만들었음.
 
-Character class 만드는중.(Character()생성자, ControlCharacter()함수 만들어야함)
+Character class 만드는중.(Control Character()함수만 구현하면 ok)
 
 -게임진행-
 GamePlay class 만들어서 --> GamePlay class 생성자에서 map객체과 character객체 만들고
