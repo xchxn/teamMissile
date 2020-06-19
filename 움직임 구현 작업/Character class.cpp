@@ -1,3 +1,4 @@
+//Control Character()함수만 구현하면 됌 
 class Character
 {    
     private : 
