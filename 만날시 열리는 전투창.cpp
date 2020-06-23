@@ -22,7 +22,7 @@ void menu();
 int main()
 {
  professor_state Song, jang, Red;  // 송, 장, 홍 교수님 캐릭터 생성 
- int selMenu;
+ int selMenu;  
    
 
  while(1)
