@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class Menu { //프로젝트 시작전 
+class Menu { //프로젝트 시작전   
 public:
 	Menu() {	
 
