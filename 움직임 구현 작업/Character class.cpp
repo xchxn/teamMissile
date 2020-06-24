@@ -45,7 +45,18 @@ class Character
 		    leg_m = 1;				
 		    t_leg = 0;
 		}
-		void ControlCharacter();
+		void ControlCharacter()
+		{
+			bool move = FALSE;
+			 
+			if (GetAsyncKeyState(VK_LEFT) && x > 1) 
+			{											 
+				x -= 1;	
+				direction = FALSE;
+				move = TRUE;
+			}
+			
+		}
 		
 		//private영역에 있는 변수들 리턴
 		int GetX(){return x;}
