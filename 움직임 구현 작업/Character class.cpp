@@ -46,9 +46,9 @@ class Character
 		{
 			bool move = FALSE;
 			 
-			if (GetAsyncKeyState(VK_LEFT) && x > 1) 
-			{											 
-				x -= 1;	
+			if (GetAsyncKeyState(VK_LEFT) && x > 1) 	//kbhit하고 switch문으로도 해봤지만 뭔가 느림
+			{											//키가 안눌렸을 때만  GetAsyncKeyState 0을 리턴.
+				x -= 1;			//캐릭터의 출력 x좌표를 1 줄임 
 				move = TRUE;
 			}
 			
@@ -63,13 +63,13 @@ class Character
 		
 			y -= 2;
 			
-			if (y < 19)	
+			if (y < 19)	//캐릭터 그려주는 y위치는 16임. 거기에 y가 19가 될 때 까지 t_jump를 더함.(중력)  && 위화살표 누르면 t_jump를 0으로 만들어줘서 캐릭터가 y죄표 16에 가까이 위치하게 출력
 			{
 				
 				if (t_jump < 4)
 					t_jump += 0.3;
 					
-				y += floor(t_jump);
+				y += floor(t_jump);    //floor는 내림함수 
 				
 				if (y > 19)
 					y = 19;
