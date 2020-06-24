@@ -8,7 +8,6 @@ class Character
 		int size_y;
     	char figure[10];	//캐릭터 생김새 배열 (3*3크기 출력될 예정)
     	char name[8];		//캐릭터 위에 뜰 이름 
-    	bool direction;		//true=우측이동 , false=좌측이동 
     
 	    float t_jump;		//중력 구현할 변수 
 	    
@@ -40,10 +39,8 @@ class Character
 			name[5] = 'n';
 			name[6] = 'g';
 			name[7] = '\0';
-			direction = TRUE;
+
 			t_jump = 2;
-		    leg_m = 1;				
-		    t_leg = 0;
 		}
 		void ControlCharacter()
 		{
@@ -52,14 +49,12 @@ class Character
 			if (GetAsyncKeyState(VK_LEFT) && x > 1) 
 			{											 
 				x -= 1;	
-				direction = FALSE;
 				move = TRUE;
 			}
 			
 			if (GetAsyncKeyState(VK_RIGHT) && x < MAP_X_MAX - 2) 
 			{
 				x += 1;
-				direction = TRUE;
 				move = TRUE;
 			}
 			
@@ -84,8 +79,7 @@ class Character
 				
 				t_jump = 0;
 				y = 19;
-			}
-			
+			}	
 		}
 		
 		//private영역에 있는 변수들 리턴
