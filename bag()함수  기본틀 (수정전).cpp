@@ -28,7 +28,7 @@ void heal()             // 나중에 만날시 열리는 전투창에 옮겨야함.
 
 void strup()            //나중에 만날시 열리는 전투창에 옮겨야함. 
 {
-	bool sw = True;
+	bool sw = True;     // 나중에 만날시 열리는 전투창에서 전역변수로 빼야할 
 	int str_up = 10;
 	cout << "모든 공격과 스킬에 공격력 10이 붙었습니다." << endl;
 }
