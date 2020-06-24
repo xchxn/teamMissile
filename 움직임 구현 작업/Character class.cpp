@@ -63,6 +63,11 @@ class Character
 				move = TRUE;
 			}
 			
+			if (GetAsyncKeyState(VK_UP) && y > 1 && y == 19)
+				t_jump = 0;
+		
+			y -= 2;	
+			
 		}
 		
 		//private영역에 있는 변수들 리턴
