@@ -66,7 +66,25 @@ class Character
 			if (GetAsyncKeyState(VK_UP) && y > 1 && y == 19)
 				t_jump = 0;
 		
-			y -= 2;	
+			y -= 2;
+			
+			if (y < 19)	
+			{
+				
+				if (t_jump < 4)
+					t_jump += 0.3;
+					
+				y += floor(t_jump);
+				
+				if (y > 19)
+					y = 19;
+			} 
+			else 
+			{
+				
+				t_jump = 0;
+				y = 19;
+			}
 			
 		}
 		
