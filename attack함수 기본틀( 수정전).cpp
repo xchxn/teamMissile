@@ -18,17 +18,29 @@ void attack(){
 	}
 }
 
-void basic attack()                        //만날시 열리는 전투창으로 이동 나중에  
+void basic attack( )                        //만날시 열리는 전투창으로 이동 나중에  
 {
 	Monster_Hp = Monster_Hp - 5;
+	if(sw){
+		Monster_Hp = Monster_Hp - 15;
+		sw = false;
+	}
 }
 
 void skill1()                             //만날시 열리는 전투창으로 이동 나중에 
 { 
 	Monster_Hp = Monster_Hp - 10;
+	if(sw){
+		Monster_Hp = Monster_Hp - 20;
+	    sw = false; 
+	}
 }
 
 void skill2()                              //만날시 열리는 전투창으로 이동 나중에 
 {
 	Monster_Hp = Monster_Hp - 15;
+	if(sw){
+		Monster_Hp = Monster_Hp - 25;
+	    sw = false; 
+	}
 }
