@@ -56,6 +56,13 @@ class Character
 				move = TRUE;
 			}
 			
+			if (GetAsyncKeyState(VK_RIGHT) && x < MAP_X_MAX - 2) 
+			{
+				x += 1;
+				direction = TRUE;
+				move = TRUE;
+			}
+			
 		}
 		
 		//private영역에 있는 변수들 리턴
