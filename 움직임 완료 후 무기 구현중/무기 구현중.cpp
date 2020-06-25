@@ -315,6 +315,32 @@ class Map
 			Drawfigure(4,6,6,1,"Power:");
 			DrawNumber(11,6,Song->GetPower());
 		}
+		void DrawWeapon()
+		{
+			Drawfigure(Song->weaponX,Song->weaponY,4,1,Song->rightweaponFigure);
+		}
+		void DrawAttack()
+		{
+			if(Song->direction == TRUE && Song->attack == TRUE)
+			{
+				Song->weaponX++;
+				DrawWeapon();
+				
+				Song->weaponX--;
+				Song->rightweaponFigure[3] = ' ';
+				Song->rightweaponFigure[4] = ' ';
+				DrawWeapon();
+				
+			}
+			
+			if(Song->direction == FALSE && Song->attack == TRUE)
+			{
+				Song->weaponX--;
+				DrawWeapon();
+				Song->weaponX++;
+				DrawWeapon();
+			}
+		}
 };
 
 class GamePlay
