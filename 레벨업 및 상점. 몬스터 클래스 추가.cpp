@@ -6,7 +6,7 @@
 using namespace std;
 
  bool kill = false;                // 나중에 몬스터를 죽이면 kill을 true;로 바꾼다. true일때 경험치를 올려 레벨을 올리기 위한 조건 
- 
+ bool sw = false;                     // 가방에서 주문서  힘강화 할때 사욯하는 조건 
 class professor_state    
 {
  		 
@@ -125,14 +125,106 @@ void menu()
 }
 
 void attack(){
-	cout << "공격" << endl;       // 이제 시간 날?? 수정 
+	int num;
+	cout << "무슨 공격을 할까요?" << endl;
+	cin >> num;
+	switch(num){
+		case 1:
+			cout << "기본 공격(데미지: 5) " << endl;
+			basic attack();
+			break; 
+		case 2:
+			cout << "기본 스킬1(데미지: 10)" << endl;
+			basic skill1(); 
+			break;
+		case 3:
+		    cout << "기본 스킬2 (데미지: 15)"  << endl; 
+		    basic skill2();
+		    break;
+	}
 }
-void defense(){
-	cout << "수비 " << endl;   // 수정 
+
+void basic attack( )                        //만날시 열리는 전투창으로 이동 나중에  
+{
+	Monster_Hp = Monster_Hp - 5;
+	if(sw){
+		Monster_Hp = Monster_Hp - 15;
+		sw = false;
+	}
 }
+
+void basic skill1()                             //만날시 열리는 전투창으로 이동 나중에 
+{ 
+	Monster_Hp = Monster_Hp - 10;
+	if(sw){
+		Monster_Hp = Monster_Hp - 20;
+	    sw = false; 
+	}
+}
+
+void basic skill2()                              //만날시 열리는 전투창으로 이동 나중에 
+{
+	Monster_Hp = Monster_Hp - 15;
+	if(sw){
+		Monster_Hp = Monster_Hp - 25;
+	    sw = false; 
+	}
+}
+
 void bag(){
-	cout << " 가방 " << endl;     // 수정 
+	int num ;
+	cout << " 가방을 여시겠습니까? " << endl;     // 수정'
+    cout << " 1. 네  " << endl;
+	cout << " 2. 아니오 " << endl;
+	cin >> num;
+	if(num = 1){
+		cout << " 멀꺼내시겠습니까? " << endl;
+		cout << " 1. 사과 " << endl;
+		cout << " 2. 주문서 " << endl; 
+		switch(num){
+			case 1:
+				heal();    // 사과를 먹게 되면 체력 힐       나중에 밑에 힐 함수 만들어야함. 
+			case 2: 
+				strup();  // 주문서를 통한 공격력 강화        나중에 밑에 함수 만들어야함. 
+				
+		}
+		
+	} 
 }
+
+void heal()             // 나중에 만날시 열리는 전투창에 옮겨야함. 
+{
+	int hp_up = 10;
+	Song_ hp = Song_ hp +10;
+	
+}
+
+void strup()            //나중에 만날시 열리는 전투창에 옮겨야함. 
+{
+	sw = true;     // 나중에 만날시 열리는 전투창에서 전역변수로 빼야할듯, 그리고 강화된 상태에서 평타나 스킬때리면 원래대로 돌아옴. 
+	int str_up = 10;
+	cout << "모든 공격과 스킬에 공격력 10이 붙었습니다." << endl;
+}
+
 void run(){
-	cout << "도 망 " << endl;       // 수정  
+	int num; 
+	int num_2;
+	cout << "도망가시겠습니까? " << endl;      
+	cout << "1. 네 도망가겠습니다." << endl;
+	cout << "2. 아니요." << endl;
+	cin >> num;
+	switch(num){
+		case 1:
+			selMenu = 5;
+		case 2:
+			cout<<"1.공격하시겠습니까?" << endl;
+			cout<<"2.가방을 여시겠습니까?" << endl;
+			cin >> num_2;
+			if(num_2 == 1){
+				attach();
+			}
+			if(num_2 == 2){
+				bag();
+			}
+	}	
 }
