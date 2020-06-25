@@ -93,8 +93,6 @@ class Character
 			name[7] = '\0';
 			direction = TRUE;
 			t_jump = 2;
-		  //  leg_m = 1;				
-		   // t_leg = 0;
 		}
 	
 		void ControlCharacter() 
