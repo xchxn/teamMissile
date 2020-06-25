@@ -4,7 +4,7 @@
 #define MAP_X_MAX 49
 #define MAP_Y_MAX 17
 using namespace std;
-
+ 
 class Console	//콘솔창을 설정 관련 클래스 
 {
 	public:
