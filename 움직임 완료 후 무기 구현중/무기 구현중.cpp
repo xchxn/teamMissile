@@ -57,6 +57,9 @@ class Character
 	 //   unsigned int t_leg;
 	
 	public :
+		
+		bool direction;			//true=우측이동 , false=좌측이동
+		
 		Character()		//생성자로 초기값 설정 
 		{
 			x = MAP_X_MAX / 2 + 1;
