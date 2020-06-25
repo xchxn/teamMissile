@@ -57,7 +57,11 @@ class Character
 	 //   unsigned int t_leg;
 	
 	public :
-		
+		char* figure_invenWeapon;
+	    char rightweaponFigure[4];
+		bool attack;
+	    int weaponX;
+		int weaponY;
 		bool direction;			//true=우측이동 , false=좌측이동
 		
 		Character()		//생성자로 초기값 설정 
