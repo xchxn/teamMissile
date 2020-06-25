@@ -50,12 +50,8 @@ class Character
     	int exp,expi;
     	int power;
     	int wepon;
-		bool direction;			//true=우측이동 , false=좌측이동 
-    	
 	    float t_jump;
-	   // int leg_m;				//leg motion
-	 //   unsigned int t_leg;
-	
+
 	public :
 		char* figure_invenWeapon;
 	    char rightweaponFigure[4];
@@ -314,6 +310,8 @@ class Map
 			
 			Drawfigure(4,6,6,1,"Power:");
 			DrawNumber(11,6,Song->GetPower());
+			
+			Drawfigure(27, 5, 5, 2, Song->figure_invenWeapon); //무기상자 안에 무기 그리기 
 		}
 		void DrawWeapon()
 		{
@@ -356,6 +354,8 @@ class GamePlay
 			m1.fillArray(m1.GetMapData(), ' ', MAP_X_MAX * MAP_Y_MAX);	//맵을 공백으로 초기화 시켜줌  
 			(m1.Song) -> ControlCharacter();		//캐릭터 움직임 
 			m1.Drawfigure(m1.Song->GetX(), (m1.Song)->GetY(), (m1.Song)->GetSizeX(), (m1.Song)->GetSizeY(),(m1.Song)->Getfigure());		//맵에 Song캐릭터 그리기 
+			m1.DrawWeapon();
+			m1.DrawAttack();
 			m1.MakeGround();		//땅 다시 맵에 반영해주기. 왜냐하면 위에서 반복적으로 맵 전체를 공백으로 초기화 하므로!
 			m1.printName((m1.Song)->GetX(),(m1.Song)->GetY(),(m1.Song)->Getname());
 			m1.ShowStatus();
