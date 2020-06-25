@@ -100,6 +100,16 @@ class Character
 			name[7] = '\0';
 			direction = TRUE;
 			t_jump = 2;
+			
+			attack = FALSE;	
+			//인벤토리 내 무기 모양 
+			figure_invenWeapon= "   /   /  ";
+			
+			//캐릭터가 들고 있는 무기 모양 	
+			rightweaponFigure[0] = 'o';
+			rightweaponFigure[1] = '-';
+			rightweaponFigure[2] = '-';	
+			rightweaponFigure[3] = '-';
 		}
 	
 		void ControlCharacter() 
