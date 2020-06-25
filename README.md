@@ -34,4 +34,4 @@ C++ 콘솔 기반 2D 횡스크롤 게임
 | :------------ | :----------: |
 | We took a test and talked a lot about the project | &#9745; |
 
-###### :question: For more information about our game, please see https://github.com/seokyeo/teamMissile/blob/master/Project%20Concept.txt
+###### :question: For more information about our game, please contact seokregi@gmail.com
