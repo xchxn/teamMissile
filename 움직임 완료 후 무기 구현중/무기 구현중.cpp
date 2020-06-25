@@ -119,6 +119,11 @@ class Character
 			weaponX = x+2;
 			weaponY = y+1;
 			
+			if (GetAsyncKeyState(0x5A)) 	//공격키 눌리면 
+			{
+				attack = TRUE;
+			}
+			
 			if (GetAsyncKeyState(VK_LEFT) && x > 1) 		//kbhit하고 switch문으로도 해봤지만 뭔가 느림 
 			{												//키가 안눌렸을 때만  GetAsyncKeyState 0을 리턴. 
 				x -= 1;		//캐릭터의 출력 x좌표를 1 줄임 
