@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <math.h>
 #include <windows.h>
@@ -9,25 +10,25 @@
 
 using namespace std;
 
-class ConsoleSet		//ÄÜ¼ÖÃ¢ ¼³Á¤ Å¬·¡½º. Console::SetCon 
+class ConsoleSet		//ì½˜ì†”ì°½ ì„¤ì • í´ë˜ìŠ¤. Console::SetCon 
 {
 	public : 
-		ConsoleSet() //»ı¼ºÀÚ¸¦ ÅëÇØ ÄÜ¼ÖÃ¢ ¼³Á¤ 
+		ConsoleSet() //ìƒì„±ìë¥¼ í†µí•´ ì½˜ì†”ì°½ ì„¤ì • 
 		{			
-			system("mode con:cols=130 lines=32");	//ÄÜ¼ÖÃ¢ÀÇ °¡·Î ¼¼·Î Å©±â¸¦ ¸Ê°ú µ¿ÀÏÇÏ°Ô ¼³Á¤ 
+			system("mode con:cols=130 lines=32");	//ì½˜ì†”ì°½ì˜ ê°€ë¡œ ì„¸ë¡œ í¬ê¸°ë¥¼ ë§µê³¼ ë™ì¼í•˜ê²Œ ì„¤ì • 
 			system("title Team Missile");
 				
 			HANDLE hConsole;
 		    CONSOLE_CURSOR_INFO ConsoleCursor;
 		    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 			    
-		    ConsoleCursor.bVisible = 0;		//Ä¿¼­ ¾Èº¸ÀÌ°Ô 
-		    ConsoleCursor.dwSize = 1;		//Ä¿¼­ ¹éºĞÀ² Å©±â 1·Î 
+		    ConsoleCursor.bVisible = 0;		//ì»¤ì„œ ì•ˆë³´ì´ê²Œ 
+		    ConsoleCursor.dwSize = 1;		//ì»¤ì„œ ë°±ë¶„ìœ¨ í¬ê¸° 1ë¡œ 
 		    SetConsoleCursorInfo(hConsole , &ConsoleCursor);
 		}
 		
-		static void gotoxy(short m_x, short m_y) 		//ConsloeSet::Çü½ÄÀ¸·Î ¾µ¼ö ÀÖµµ·Ï static ÇÔ¼ö·Î ¼±¾ğ 
-		{//Ä¿¼­ÀÌµ¿ÇÔ¼ö
+		static void gotoxy(short m_x, short m_y) 		//ConsloeSet::í˜•ì‹ìœ¼ë¡œ ì“¸ìˆ˜ ìˆë„ë¡ static í•¨ìˆ˜ë¡œ ì„ ì–¸ 
+		{//ì»¤ì„œì´ë™í•¨ìˆ˜
         COORD Cur;
         Cur.X = m_x;
         Cur.Y = m_y;
@@ -38,27 +39,27 @@ class ConsoleSet		//ÄÜ¼ÖÃ¢ ¼³Á¤ Å¬·¡½º. Console::SetCon
 class Character
 {    
     private : 
-		int x;		//Ä³¸¯ÅÍ°¡ Ãâ·ÂµÉ xÁÂÇ¥
-    	int y;		//Ä³¸¯ÅÍ°¡ Ãâ·ÂµÉ yÁÂÇ¥
-    	int size_x;		//Ä³¸¯ÅÍ¸¦ Ãâ·ÂÇÒ 3*3Å©±â 
+		int x;		//ìºë¦­í„°ê°€ ì¶œë ¥ë  xì¢Œí‘œ
+    	int y;		//ìºë¦­í„°ê°€ ì¶œë ¥ë  yì¢Œí‘œ
+    	int size_x;		//ìºë¦­í„°ë¥¼ ì¶œë ¥í•  3*3í¬ê¸° 
 		int size_y;
-    	char figure[10];		//Ä³¸¯ÅÍ »ı±è»õ ¹è¿­ (3*3Å©±â Ãâ·ÂµÉ ¿¹Á¤) 
+    	char figure[10];		//ìºë¦­í„° ìƒê¹€ìƒˆ ë°°ì—´ (3*3í¬ê¸° ì¶œë ¥ë  ì˜ˆì •) 
     
-    	bool direction;			//true=¿ìÃøÀÌµ¿ , false=ÁÂÃøÀÌµ¿ 
+    	bool direction;			//true=ìš°ì¸¡ì´ë™ , false=ì¢Œì¸¡ì´ë™ 
     
 	    float t_jump;
 	    int leg_m;				//leg motion
 	    unsigned int t_leg;
 	
 	public :
-		Character()		//»ı¼ºÀÚ·Î ÃÊ±â°ª ¼³Á¤ 
+		Character()		//ìƒì„±ìë¡œ ì´ˆê¸°ê°’ ì„¤ì • 
 		{
 			x = MAP_X_MAX / 2 + 1;
 			y = MAP_Y_MAX / 2 + 1;
 			size_x = 3;
 			size_y = 3;
 			
-			//ÃÊ±â Ä³¸¯ÅÍ ¸ğ¾ç (3*3) 
+			//ì´ˆê¸° ìºë¦­í„° ëª¨ì–‘ (3*3) 
 			figure[0] = ' ';
 			figure[1] = '0';
 			figure[2] = ' ';
@@ -79,9 +80,9 @@ class Character
 		{	
 			bool move = FALSE;
 			 
-			if (GetAsyncKeyState(VK_LEFT) && x > 1) 		//kbhitÇÏ°í switch¹®À¸·Îµµ ÇØºÃÁö¸¸ ¹º°¡ ´À¸² 
-			{												//Å°°¡ ¾È´­·ÈÀ» ¶§¸¸  GetAsyncKeyState 0À» ¸®ÅÏ. 
-				x -= 1;		//Ä³¸¯ÅÍÀÇ Ãâ·Â xÁÂÇ¥¸¦ 1 ÁÙÀÓ 
+			if (GetAsyncKeyState(VK_LEFT) && x > 1) 		//kbhití•˜ê³  switchë¬¸ìœ¼ë¡œë„ í•´ë´¤ì§€ë§Œ ë­”ê°€ ëŠë¦¼ 
+			{												//í‚¤ê°€ ì•ˆëˆŒë ¸ì„ ë•Œë§Œ  GetAsyncKeyState 0ì„ ë¦¬í„´. 
+				x -= 1;		//ìºë¦­í„°ì˜ ì¶œë ¥ xì¢Œí‘œë¥¼ 1 ì¤„ì„ 
 				direction = FALSE;
 				move = TRUE;
 			}
@@ -104,7 +105,7 @@ class Character
 				if (t_jump < 4)
 					t_jump += 0.3;
 					
-				y += floor(t_jump);		//floor´Â ³»¸²ÇÔ¼ö 
+				y += floor(t_jump);		//floorëŠ” ë‚´ë¦¼í•¨ìˆ˜ 
 				
 				if (y > 19)
 					y = 19;
@@ -116,18 +117,18 @@ class Character
 				y = 19;
 			}
 		
-			if (direction == TRUE) 		//Ä³¸¯ÅÍ°¡ ¿ìÃø¹æÇâÀ» º¸°íÀÖÀ¸¸é 
+			if (direction == TRUE) 		//ìºë¦­í„°ê°€ ìš°ì¸¡ë°©í–¥ì„ ë³´ê³ ìˆìœ¼ë©´ 
 			{	
-				figure[3] = '('; figure[5] = 'o';		//¸öÅëºÎºĞ µ¹¸®±â  	
+				figure[3] = '('; figure[5] = 'o';		//ëª¸í†µë¶€ë¶„ ëŒë¦¬ê¸°  	
 			} 
-			else 					//Ä³¸¯ÅÍ°¡ ¿ŞÂÊ¹æÇâÀ» º¸°íÀÖÀ¸¸é 
+			else 					//ìºë¦­í„°ê°€ ì™¼ìª½ë°©í–¥ì„ ë³´ê³ ìˆìœ¼ë©´ 
 			{	
-				figure[3] = 'o'; figure[5] = ')';	 	//¸öÅëºÎºĞ µ¹¸®±â 
+				figure[3] = 'o'; figure[5] = ')';	 	//ëª¸í†µë¶€ë¶„ ëŒë¦¬ê¸° 
 			}
 			
 		}
 		
-		//private¿µ¿ª¿¡ ÀÖ´Â º¯¼öµé ¸®ÅÏ 
+		//privateì˜ì—­ì— ìˆëŠ” ë³€ìˆ˜ë“¤ ë¦¬í„´ 
 		int GetX(){return x;}
 		int GetY(){return y;}
 		int GetSizeX(){return size_x;}
@@ -138,56 +139,56 @@ class Character
 class Map
 {	
 	private :
-		char ground[MAP_X_MAX];						//¶¥À» Ç¥ÇöÇÒ ÀÏÂ÷¿ø ¹è¿­ 
-		char mapData[MAP_X_MAX * MAP_Y_MAX];		//1Â÷¿ø ¹è¿­À» °¡·ÎÅ©±âMAP_X_MAX * ¼¼·ÎÅ©±â MAP_Y_MAX·Î Ç¥Çö. mapData¸¦ Áö¼ÓÀûÀ¸·Î Ãâ·ÂÇÔÀ¸·Î½á °ÔÀÓ ¿òÁ÷ÀÓ ±¸Çö. 
-				//ÁÖÀÇÁ¡ : ÄÜ¼ÛÃ¢ Å©±â¸¦ µ¿ÀÏÇÏ°Ô ¹è¿­ÀÇ Å©±â¿Í µ¿ÀÏÇÏ°Ô ÇØ¾ß¸¸ Á¦´ë·Î µÈ ¸ğ¾çÀ¸·Î Ãâ·Â‰Î. 
+		char ground[MAP_X_MAX];						//ë•…ì„ í‘œí˜„í•  ì¼ì°¨ì› ë°°ì—´ 
+		char mapData[MAP_X_MAX * MAP_Y_MAX];		//1ì°¨ì› ë°°ì—´ì„ ê°€ë¡œí¬ê¸°MAP_X_MAX * ì„¸ë¡œí¬ê¸° MAP_Y_MAXë¡œ í‘œí˜„. mapDataë¥¼ ì§€ì†ì ìœ¼ë¡œ ì¶œë ¥í•¨ìœ¼ë¡œì¨ ê²Œì„ ì›€ì§ì„ êµ¬í˜„. 
+				//ì£¼ì˜ì  : ì½˜ì†¡ì°½ í¬ê¸°ë¥¼ ë™ì¼í•˜ê²Œ ë°°ì—´ì˜ í¬ê¸°ì™€ ë™ì¼í•˜ê²Œ í•´ì•¼ë§Œ ì œëŒ€ë¡œ ëœ ëª¨ì–‘ìœ¼ë¡œ ì¶œë ¥ëŒ. 
 	public :
 		Map()
 		{	
-			fillArray(mapData, ' ' , MAP_X_MAX * MAP_Y_MAX);		//»ı¼ºÀÚ·Î mapData¹è¿­À» °ø¹é' 'À¸·Î ÃÊ±âÈ­ 
-			fillArray(ground, '=', MAP_X_MAX);			//»ı¼ºÀÚ·Î ground¹è¿­À» '='·Î ÃÊ±âÈ­ 
+			fillArray(mapData, ' ' , MAP_X_MAX * MAP_Y_MAX);		//ìƒì„±ìë¡œ mapDataë°°ì—´ì„ ê³µë°±' 'ìœ¼ë¡œ ì´ˆê¸°í™” 
+			fillArray(ground, '=', MAP_X_MAX);			//ìƒì„±ìë¡œ groundë°°ì—´ì„ '='ë¡œ ì´ˆê¸°í™” 
 		}
 		
-		void fillArray(char arr[], char c, int max_value) 	//¹è¿­ÀÇ str[0]~str[max_value]À» ¹®ÀÚ c·Î Ã¤¿ì´Â ÇÔ¼ö 
+		void fillArray(char arr[], char c, int max_value) 	//ë°°ì—´ì˜ str[0]~str[max_value]ì„ ë¬¸ì cë¡œ ì±„ìš°ëŠ” í•¨ìˆ˜ 
 		{	
 			for (int i = 0; i < max_value; i++)
 				arr[i] = c;
 		}
 		
-		void EditMap(int x, int y, char str) 		//ÄÜ¼ÖÃ¢ÀÇ x,yÁÂÇ¥¸¦ str·Î ¼öÁ¤ÇÏ´Â ÇÔ¼ö.  ÄÜ¼ÖÃ¢ÀÇ ÁÂÃøÃÖ»ó´ÜÀÌ (1,1)ÀÓ. 
+		void EditMap(int x, int y, char str) 		//ì½˜ì†”ì°½ì˜ x,yì¢Œí‘œë¥¼ strë¡œ ìˆ˜ì •í•˜ëŠ” í•¨ìˆ˜.  ì½˜ì†”ì°½ì˜ ì¢Œì¸¡ìµœìƒë‹¨ì´ (1,1)ì„. 
 		{
-			if (x > 0 && y > 0 && x - 1 < MAP_X_MAX && y - 1 < MAP_Y_MAX)		//mapData´Â (MAP_X_MAX*MAP_Y_MAX)»çÀÌÁî 
-			mapData[(y - 1) * MAP_X_MAX + x - 1] = str;						//(y-1)*MAP_X_MAX¸¦ ÇÏ¸é ÄÜ¼ÖÃ¢ÀÇ y¹øÂ° ¿­À» ³ªÅ¸³¾ ¼ö ÀÖÀ½. °Å±â¿¡ x-1¸¦ ´õÇÏ¸é (x,y)¸¦ ³ªÅ¸³¿. 
-																			//ÄÜ¼ÖÃ¢ÀÇ (1,1)ÁÂÇ¥ = ÄÜ¼ÖÃ¢ÀÇ ÁÂÃøÃÖ»ó´Ü = mapData[0]À» ÀÇ¹Ì
-																			//ex)  EditMap(1,1,'@')¸¦ ÇÏ¸é ÄÜ¼ÖÃ¢ ÁÂÃøÃÖ»ó´Ü¿¡ @¸¦ ±×¸².
+			if (x > 0 && y > 0 && x - 1 < MAP_X_MAX && y - 1 < MAP_Y_MAX)		//mapDataëŠ” (MAP_X_MAX*MAP_Y_MAX)ì‚¬ì´ì¦ˆ 
+			mapData[(y - 1) * MAP_X_MAX + x - 1] = str;						//(y-1)*MAP_X_MAXë¥¼ í•˜ë©´ ì½˜ì†”ì°½ì˜ yë²ˆì§¸ ì—´ì„ ë‚˜íƒ€ë‚¼ ìˆ˜ ìˆìŒ. ê±°ê¸°ì— x-1ë¥¼ ë”í•˜ë©´ (x,y)ë¥¼ ë‚˜íƒ€ëƒ„. 
+																			//ì½˜ì†”ì°½ì˜ (1,1)ì¢Œí‘œ = ì½˜ì†”ì°½ì˜ ì¢Œì¸¡ìµœìƒë‹¨ = mapData[0]ì„ ì˜ë¯¸
+																			//ex)  EditMap(1,1,'@')ë¥¼ í•˜ë©´ ì½˜ì†”ì°½ ì¢Œì¸¡ìµœìƒë‹¨ì— @ë¥¼ ê·¸ë¦¼.
 		}
 		
-		void MakeGround() //¶¥ ¹è¿­ ground¸¦ mapData¿¡ ¹İ¿µÇÔÀ¸·Î½á ¶¥ ±×¸®±â 
+		void MakeGround() //ë•… ë°°ì—´ groundë¥¼ mapDataì— ë°˜ì˜í•¨ìœ¼ë¡œì¨ ë•… ê·¸ë¦¬ê¸° 
 		{	
-			//¶¥ 
+			//ë•… 
 			Drawfigure(1, 22, MAP_X_MAX, 1, ground);
-			//»óÁ¡ º´¿ø(³×¸ğ¹Ú½º) 
+			//ìƒì  ë³‘ì›(ë„¤ëª¨ë°•ìŠ¤) 
 			Drawfigure(1,10, 40, 1, ground); 
 			Drawfigure(20, 10, 1, 12, ground); 
 			Drawfigure(40, 10, 1, 12, ground);
-			DrawMap(94,32, "ITÁ¤º¸°øÇĞ°ú ¹Ì»çÀÏ ÆÀ <±³¼öÀÇ ¸ğÇè>");
-			//Á¶ÀÛ¹ı 
-			DrawMap(1,24,  "Á¶ÀÛ¹ı"); 
-    		DrawMap(10, 25, "   ¡â    : Jump           Space : ´ëÈ­");     
-    		DrawMap(10, 27, "¢·    ¢¹ : Left / Right");     
-       		DrawMap(10, 29, "   ¡ä    : Next");
-       		//±¸¸§
-       		DrawMap(1, 5, "   ¡¤ ¡¤ ¡¤ ¡¤                ¡¤ ¡¤ ¡¤ ¡¤           ¡¤ ¡¤ ¡¤ ¡¤              ¡¤ ¡¤ ¡¤ ¡¤            ¡¤ ¡¤ ¡¤"); 
-			DrawMap(1, 6, " ¡¤ ¡¤ ¡¤ ¡¤ ¡¤ ¡¤          ¡¤ ¡¤ ¡¤ ¡¤ ¡¤        ¡¤ ¡¤ ¡¤ ¡¤ ¡¤ ¡¤        ¡¤ ¡¤ ¡¤ ¡¤ ¡¤         ¡¤ ¡¤ ¡¤ ¡¤");  
-			DrawMap(1, 7, "   ¡¤ ¡¤ ¡¤ ¡¤                ¡¤ ¡¤  ¡¤ ¡¤          ¡¤ ¡¤ ¡¤ ¡¤              ¡¤ ¡¤ ¡¤ ¡¤            ¡¤ ¡¤ ¡¤");
-			//°ñµå 
+			DrawMap(94,32, "ITì •ë³´ê³µí•™ê³¼ ë¯¸ì‚¬ì¼ íŒ€ <êµìˆ˜ì˜ ëª¨í—˜>");
+			//ì¡°ì‘ë²• 
+			DrawMap(1,24,  "ì¡°ì‘ë²•"); 
+    		DrawMap(10, 25, "   â–³    : Jump           Space : ëŒ€í™”");     
+    		DrawMap(10, 27, "â—    â–· : Left / Right");     
+       		DrawMap(10, 29, "   â–½    : Next");
+       		//êµ¬ë¦„
+       		DrawMap(1, 5, "   Â· Â· Â· Â·                Â· Â· Â· Â·           Â· Â· Â· Â·              Â· Â· Â· Â·            Â· Â· Â·"); 
+			DrawMap(1, 6, " Â· Â· Â· Â· Â· Â·          Â· Â· Â· Â· Â·        Â· Â· Â· Â· Â· Â·        Â· Â· Â· Â· Â·         Â· Â· Â· Â·");  
+			DrawMap(1, 7, "   Â· Â· Â· Â·                Â· Â·  Â· Â·          Â· Â· Â· Â·              Â· Â· Â· Â·            Â· Â· Â·");
+			//ê³¨ë“œ 
 			DrawMap(116, 2, "Gold: ");
-			//°¡¹æ
-			DrawMap(120, 5, "°¡¹æ: Tab"); 
-			//21ÁÙ È¾½ºÅ©
-			DrawMap(1, 11, "»óÁ¡");
-			DrawMap(21, 11, "º´¿ø"); 
-			DrawMap(70, 21, "²É     ¢Ë¢Ë¢Ë(º¸¹°»óÀÚ)     ³ª¹«        ?¾²·¯Áø ÇàÀÎ"); //°ãÄ¨ µû¶ó¼­ Ä³¸¯ÅÍ ¸ğ¼ÇºÎºĞÀº µû·Î ·Ñ 
+			//ê°€ë°©
+			DrawMap(120, 5, "ê°€ë°©: Tab"); 
+			//21ì¤„ íš¡ìŠ¤í¬
+			DrawMap(1, 11, "ìƒì ");
+			DrawMap(21, 11, "ë³‘ì›"); 
+			DrawMap(70, 21, "ê½ƒ     â–¦â–¦â–¦(ë³´ë¬¼ìƒì)     ë‚˜ë¬´        ?ì“°ëŸ¬ì§„ í–‰ì¸"); //ê²¹ì¹© ë”°ë¼ì„œ ìºë¦­í„° ëª¨ì…˜ë¶€ë¶„ì€ ë”°ë¡œ ë¡¤ 
 		}
 		
 		void DrawMap(int x, int y, char str[])
@@ -196,20 +197,20 @@ class Map
 			EditMap(x+i, y, str[i]);	
 		}
 		
-		void Drawfigure(int x, int y, int size_x, int size_y, char figure[])	//EditMapÇÔ¼ö¸¦ for¹® Ã³¸®ÇØ¼­ x,yÁÂÇ¥¸¦ ³ÖÀ¸¸é ÇØ´ç ÁÂÇ¥¸¦ ±âÁØÀ¸·Î size_x,size_yÅ©±âÀÇ ¸ÊÀ» ¼öÁ¤ 
-		{														//Ä³¸¯ÅÍ Å©±â°¡ size_x,size_yÀÓ. 
-			for (int i = 0; i < size_y; i++)	//size_y°³ ¿­À» ¼öÁ¤ 
+		void Drawfigure(int x, int y, int size_x, int size_y, char figure[])	//EditMapí•¨ìˆ˜ë¥¼ forë¬¸ ì²˜ë¦¬í•´ì„œ x,yì¢Œí‘œë¥¼ ë„£ìœ¼ë©´ í•´ë‹¹ ì¢Œí‘œë¥¼ ê¸°ì¤€ìœ¼ë¡œ size_x,size_yí¬ê¸°ì˜ ë§µì„ ìˆ˜ì • 
+		{														//ìºë¦­í„° í¬ê¸°ê°€ size_x,size_yì„. 
+			for (int i = 0; i < size_y; i++)	//size_yê°œ ì—´ì„ ìˆ˜ì • 
 			{
-				for (int j = 0; j < size_x; j++)	//size_x°³ ÇàÀ» ¼öÁ¤ 
-					EditMap(x + j, y + i, figure[i * size_x + j]);		//i*size_x´Â 1Çà,2Çà,3ÇàÀ» Ç¥Çö. j´Â ¿­À» Ç¥Çö. 
+				for (int j = 0; j < size_x; j++)	//size_xê°œ í–‰ì„ ìˆ˜ì • 
+					EditMap(x + j, y + i, figure[i * size_x + j]);		//i*size_xëŠ” 1í–‰,2í–‰,3í–‰ì„ í‘œí˜„. jëŠ” ì—´ì„ í‘œí˜„. 
 			}
 		}
 		
-		char* GetMapData(){return mapData;}		//private¿µ¿ªÀÇ º¯¼ö ¸®ÅÏ. 
+		char* GetMapData(){return mapData;}		//privateì˜ì—­ì˜ ë³€ìˆ˜ ë¦¬í„´. 
 		
 		void printMap()
 		{
-			cout<<mapData;				//¸Ê Ãâ·Â 
+			cout<<mapData;				//ë§µ ì¶œë ¥ 
 		}
 };
 
@@ -224,268 +225,22 @@ class GamePlay
 			while(TRUE)
 			{
 			ConsoleSet::gotoxy(0,0);
-			m1.fillArray(m1.GetMapData(), ' ', MAP_X_MAX * MAP_Y_MAX);	//¸ÊÀ» °ø¹éÀ¸·Î ÃÊ±âÈ­ ½ÃÄÑÁÜ  
-			Song.ControlCharacter();		//Ä³¸¯ÅÍ ¿òÁ÷ÀÓ 
-			m1.Drawfigure(Song.GetX(), Song.GetY(), Song.GetSizeX(), Song.GetSizeY(),Song.Getfigure());		//¸Ê¿¡ SongÄ³¸¯ÅÍ ±×¸®±â 
-			m1.MakeGround(#include <iostream>
-#include <math.h>
-#include <windows.h>
-
-#define MAP_X_MAX 130
-#define MAP_Y_MAX 32
-#define FALSE 0
-#define TRUE 1
-
-using namespace std;
-
-class ConsoleSet		//ÄÜ¼ÖÃ¢ ¼³Á¤ Å¬·¡½º. Console::SetCon 
-{
-	public : 
-		ConsoleSet() //»ı¼ºÀÚ¸¦ ÅëÇØ ÄÜ¼ÖÃ¢ ¼³Á¤ 
-		{			
-			system("mode con:cols=130 lines=32");	//ÄÜ¼ÖÃ¢ÀÇ °¡·Î ¼¼·Î Å©±â¸¦ ¸Ê°ú µ¿ÀÏÇÏ°Ô ¼³Á¤ 
-			system("title Team Missile");
-				
-			HANDLE hConsole;
-		    CONSOLE_CURSOR_INFO ConsoleCursor;
-		    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-			    
-		    ConsoleCursor.bVisible = 0;		//Ä¿¼­ ¾Èº¸ÀÌ°Ô 
-		    ConsoleCursor.dwSize = 1;		//Ä¿¼­ ¹éºĞÀ² Å©±â 1·Î 
-		    SetConsoleCursorInfo(hConsole , &ConsoleCursor);
-		}
-		
-		static void gotoxy(short m_x, short m_y) 		//ConsloeSet::Çü½ÄÀ¸·Î ¾µ¼ö ÀÖµµ·Ï static ÇÔ¼ö·Î ¼±¾ğ 
-		{//Ä¿¼­ÀÌµ¿ÇÔ¼ö
-        COORD Cur;
-        Cur.X = m_x;
-        Cur.Y = m_y;
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Cur);
-    	}
-};
-
-class Character
-{    
-    private : 
-		int x;		//Ä³¸¯ÅÍ°¡ Ãâ·ÂµÉ xÁÂÇ¥
-    	int y;		//Ä³¸¯ÅÍ°¡ Ãâ·ÂµÉ yÁÂÇ¥
-    	int size_x;		//Ä³¸¯ÅÍ¸¦ Ãâ·ÂÇÒ 3*3Å©±â 
-		int size_y;
-    	char figure[10];		//Ä³¸¯ÅÍ »ı±è»õ ¹è¿­ (3*3Å©±â Ãâ·ÂµÉ ¿¹Á¤) 
-    
-    	bool direction;			//true=¿ìÃøÀÌµ¿ , false=ÁÂÃøÀÌµ¿ 
-    
-	    float t_jump;
-	    int leg_m;				//leg motion
-	    unsigned int t_leg;
-	
-	public :
-		Character()		//»ı¼ºÀÚ·Î ÃÊ±â°ª ¼³Á¤ 
-		{
-			x = MAP_X_MAX / 2 + 1;
-			y = MAP_Y_MAX / 2 + 1;
-			size_x = 3;
-			size_y = 3;
-			
-			//ÃÊ±â Ä³¸¯ÅÍ ¸ğ¾ç (3*3) 
-			figure[0] = ' ';
-			figure[1] = '0';
-			figure[2] = ' ';
-			figure[3] = '(';
-			figure[4] = '|';
-			figure[5] = ')';
-			figure[6] = '_';
-			figure[7] = '^';
-			figure[8] = '_';
-			figure[9] = '\0';
-			direction = TRUE;
-			t_jump = 2;
-		    leg_m = 1;				
-		    t_leg = 0;
-		}
-	
-		void ControlCharacter() 
-		{	
-			bool move = FALSE;
-			 
-			if (GetAsyncKeyState(VK_LEFT) && x > 1) 		//kbhitÇÏ°í switch¹®À¸·Îµµ ÇØºÃÁö¸¸ ¹º°¡ ´À¸² 
-			{												//Å°°¡ ¾È´­·ÈÀ» ¶§¸¸  GetAsyncKeyState 0À» ¸®ÅÏ. 
-				x -= 1;		//Ä³¸¯ÅÍÀÇ Ãâ·Â xÁÂÇ¥¸¦ 1 ÁÙÀÓ 
-				direction = FALSE;
-				move = TRUE;
-			}
-			
-			if (GetAsyncKeyState(VK_RIGHT) && x < MAP_X_MAX - 2) 
-			{
-				x += 1;
-				direction = TRUE;
-				move = TRUE;
-			}
-			
-			if (GetAsyncKeyState(VK_UP) && y > 1 && y == 19)
-				t_jump = 0;
-		
-			y -= 2;		
-			
-			if (y < 19)  
-			{
-				
-				if (t_jump < 4)
-					t_jump += 0.3;
-					
-				y += floor(t_jump);		//floor´Â ³»¸²ÇÔ¼ö 
-				
-				if (y > 19)
-					y = 19;
-			} 
-			else 
-			{
-				
-				t_jump = 0;
-				y = 19;
-			}
-		
-			if (direction == TRUE) 		//Ä³¸¯ÅÍ°¡ ¿ìÃø¹æÇâÀ» º¸°íÀÖÀ¸¸é 
-			{	
-				figure[3] = '('; figure[5] = 'o';		//¸öÅëºÎºĞ µ¹¸®±â  	
-			} 
-			else 					//Ä³¸¯ÅÍ°¡ ¿ŞÂÊ¹æÇâÀ» º¸°íÀÖÀ¸¸é 
-			{	
-				figure[3] = 'o'; figure[5] = ')';	 	//¸öÅëºÎºĞ µ¹¸®±â 
-			}
-			
-		}
-		
-		//private¿µ¿ª¿¡ ÀÖ´Â º¯¼öµé ¸®ÅÏ 
-		int GetX(){return x;}
-		int GetY(){return y;}
-		int GetSizeX(){return size_x;}
-		int GetSizeY(){return size_y;}
-		char* Getfigure(){return figure;}
-};
-
-class Map
-{	
-	private :
-		char ground[MAP_X_MAX];						//¶¥À» Ç¥ÇöÇÒ ÀÏÂ÷¿ø ¹è¿­ 
-		char mapData[MAP_X_MAX * MAP_Y_MAX];		//1Â÷¿ø ¹è¿­À» °¡·ÎÅ©±âMAP_X_MAX * ¼¼·ÎÅ©±â MAP_Y_MAX·Î Ç¥Çö. mapData¸¦ Áö¼ÓÀûÀ¸·Î Ãâ·ÂÇÔÀ¸·Î½á °ÔÀÓ ¿òÁ÷ÀÓ ±¸Çö. 
-				//ÁÖÀÇÁ¡ : ÄÜ¼ÛÃ¢ Å©±â¸¦ µ¿ÀÏÇÏ°Ô ¹è¿­ÀÇ Å©±â¿Í µ¿ÀÏÇÏ°Ô ÇØ¾ß¸¸ Á¦´ë·Î µÈ ¸ğ¾çÀ¸·Î Ãâ·Â‰Î. 
-	public :
-		Map()
-		{	
-			fillArray(mapData, ' ' , MAP_X_MAX * MAP_Y_MAX);		//»ı¼ºÀÚ·Î mapData¹è¿­À» °ø¹é' 'À¸·Î ÃÊ±âÈ­ 
-			fillArray(ground, '=', MAP_X_MAX);			//»ı¼ºÀÚ·Î ground¹è¿­À» '='·Î ÃÊ±âÈ­ 
-		}
-		
-		void fillArray(char arr[], char c, int max_value) 	//¹è¿­ÀÇ str[0]~str[max_value]À» ¹®ÀÚ c·Î Ã¤¿ì´Â ÇÔ¼ö 
-		{	
-			for (int i = 0; i < max_value; i++)
-				arr[i] = c;
-		}
-		
-		void EditMap(int x, int y, char str) 		//ÄÜ¼ÖÃ¢ÀÇ x,yÁÂÇ¥¸¦ str·Î ¼öÁ¤ÇÏ´Â ÇÔ¼ö.  ÄÜ¼ÖÃ¢ÀÇ ÁÂÃøÃÖ»ó´ÜÀÌ (1,1)ÀÓ. 
-		{
-			if (x > 0 && y > 0 && x - 1 < MAP_X_MAX && y - 1 < MAP_Y_MAX)		//mapData´Â (MAP_X_MAX*MAP_Y_MAX)»çÀÌÁî 
-			mapData[(y - 1) * MAP_X_MAX + x - 1] = str;						//(y-1)*MAP_X_MAX¸¦ ÇÏ¸é ÄÜ¼ÖÃ¢ÀÇ y¹øÂ° ¿­À» ³ªÅ¸³¾ ¼ö ÀÖÀ½. °Å±â¿¡ x-1¸¦ ´õÇÏ¸é (x,y)¸¦ ³ªÅ¸³¿. 
-																			//ÄÜ¼ÖÃ¢ÀÇ (1,1)ÁÂÇ¥ = ÄÜ¼ÖÃ¢ÀÇ ÁÂÃøÃÖ»ó´Ü = mapData[0]À» ÀÇ¹Ì
-																			//ex)  EditMap(1,1,'@')¸¦ ÇÏ¸é ÄÜ¼ÖÃ¢ ÁÂÃøÃÖ»ó´Ü¿¡ @¸¦ ±×¸².
-		}
-		
-		void MakeGround() //¶¥ ¹è¿­ ground¸¦ mapData¿¡ ¹İ¿µÇÔÀ¸·Î½á ¶¥ ±×¸®±â 
-		{	
-			//¶¥ 
-			Drawfigure(1, 22, MAP_X_MAX, 1, ground);
-			//»óÁ¡ º´¿ø(³×¸ğ¹Ú½º) 
-			Drawfigure(1,10, 40, 1, ground); 
-			Drawfigure(20, 10, 1, 12, ground); 
-			Drawfigure(40, 10, 1, 12, ground);
-			DrawMap(94,32, "ITÁ¤º¸°øÇĞ°ú ¹Ì»çÀÏ ÆÀ <±³¼öÀÇ ¸ğÇè>");
-			//Á¶ÀÛ¹ı 
-			DrawMap(1,24,  "Á¶ÀÛ¹ı"); 
-    		DrawMap(10, 25, "   ¡â    : Jump           Space : ´ëÈ­");     
-    		DrawMap(10, 27, "¢·    ¢¹ : Left / Right");     
-       		DrawMap(10, 29, "   ¡ä    : Next");
-       		//±¸¸§
-       		DrawMap(1, 5, "   ¡¤ ¡¤ ¡¤ ¡¤                ¡¤ ¡¤ ¡¤ ¡¤           ¡¤ ¡¤ ¡¤ ¡¤              ¡¤ ¡¤ ¡¤ ¡¤            ¡¤ ¡¤ ¡¤"); 
-			DrawMap(1, 6, " ¡¤ ¡¤ ¡¤ ¡¤ ¡¤ ¡¤          ¡¤ ¡¤ ¡¤ ¡¤ ¡¤        ¡¤ ¡¤ ¡¤ ¡¤ ¡¤ ¡¤        ¡¤ ¡¤ ¡¤ ¡¤ ¡¤         ¡¤ ¡¤ ¡¤ ¡¤");  
-			DrawMap(1, 7, "   ¡¤ ¡¤ ¡¤ ¡¤                ¡¤ ¡¤  ¡¤ ¡¤          ¡¤ ¡¤ ¡¤ ¡¤              ¡¤ ¡¤ ¡¤ ¡¤            ¡¤ ¡¤ ¡¤");
-			//°ñµå 
-			DrawMap(116, 2, "Gold: ");
-			//°¡¹æ
-			DrawMap(120, 5, "°¡¹æ: Tab"); 
-			//21ÁÙ È¾½ºÅ©
-			DrawMap(1, 11, "»óÁ¡");
-			DrawMap(21, 11, "º´¿ø"); 
-			DrawMap(70, 21, "²É     ¢Ë¢Ë¢Ë(º¸¹°»óÀÚ)     ³ª¹«        ?¾²·¯Áø ÇàÀÎ"); //°ãÄ¨ µû¶ó¼­ Ä³¸¯ÅÍ ¸ğ¼ÇºÎºĞÀº µû·Î ·Ñ 
-		}
-		
-		void DrawMap(int x, int y, char str[])
-		{
-			for(int i=0; i<strlen(str); i++)
-			EditMap(x+i, y, str[i]);	
-		}
-		
-		void Drawfigure(int x, int y, int size_x, int size_y, char figure[])	//EditMapÇÔ¼ö¸¦ for¹® Ã³¸®ÇØ¼­ x,yÁÂÇ¥¸¦ ³ÖÀ¸¸é ÇØ´ç ÁÂÇ¥¸¦ ±âÁØÀ¸·Î size_x,size_yÅ©±âÀÇ ¸ÊÀ» ¼öÁ¤ 
-		{														//Ä³¸¯ÅÍ Å©±â°¡ size_x,size_yÀÓ. 
-			for (int i = 0; i < size_y; i++)	//size_y°³ ¿­À» ¼öÁ¤ 
-			{
-				for (int j = 0; j < size_x; j++)	//size_x°³ ÇàÀ» ¼öÁ¤ 
-					EditMap(x + j, y + i, figure[i * size_x + j]);		//i*size_x´Â 1Çà,2Çà,3ÇàÀ» Ç¥Çö. j´Â ¿­À» Ç¥Çö. 
-			}
-		}
-		
-		char* GetMapData(){return mapData;}		//private¿µ¿ªÀÇ º¯¼ö ¸®ÅÏ. 
-		
-		void printMap()
-		{
-			cout<<mapData;				//¸Ê Ãâ·Â 
-		}
-};
-
-class GamePlay
-{
-	public : 
-		GamePlay()
-		{	
-			Character Song;
-			Map m1;
-			
-			while(TRUE)
-			{
-			ConsoleSet::gotoxy(0,0);
-			m1.fillArray(m1.GetMapData(), ' ', MAP_X_MAX * MAP_Y_MAX);	//¸ÊÀ» °ø¹éÀ¸·Î ÃÊ±âÈ­ ½ÃÄÑÁÜ  
-			Song.ControlCharacter();		//Ä³¸¯ÅÍ ¿òÁ÷ÀÓ 
-			m1.Drawfigure(Song.GetX(), Song.GetY(), Song.GetSizeX(), Song.GetSizeY(),Song.Getfigure());		//¸Ê¿¡ SongÄ³¸¯ÅÍ ±×¸®±â 
-			m1.MakeGround();		//¶¥ ´Ù½Ã ¸Ê¿¡ ¹İ¿µÇØÁÖ±â. ¿Ö³ÄÇÏ¸é À§¿¡¼­ ¹İº¹ÀûÀ¸·Î ¸Ê ÀüÃ¼¸¦ °ø¹éÀ¸·Î ÃÊ±âÈ­ ÇÏ¹Ç·Î!
+			m1.fillArray(m1.GetMapData(), ' ', MAP_X_MAX * MAP_Y_MAX);	//ë§µì„ ê³µë°±ìœ¼ë¡œ ì´ˆê¸°í™” ì‹œì¼œì¤Œ  
+			Song.ControlCharacter();		//ìºë¦­í„° ì›€ì§ì„ 
+			m1.Drawfigure(Song.GetX(), Song.GetY(), Song.GetSizeX(), Song.GetSizeY(),Song.Getfigure());		//ë§µì— Songìºë¦­í„° ê·¸ë¦¬ê¸° 
+			m1.MakeGround();		//ë•… ë‹¤ì‹œ ë§µì— ë°˜ì˜í•´ì£¼ê¸°. ì™œëƒí•˜ë©´ ìœ„ì—ì„œ ë°˜ë³µì ìœ¼ë¡œ ë§µ ì „ì²´ë¥¼ ê³µë°±ìœ¼ë¡œ ì´ˆê¸°í™” í•˜ë¯€ë¡œ!
 			m1.printMap();
 			
-			Sleep(33);	//¿òÁ÷ÀÓÀÌ ³Ê¹« »¡¶ó¼­ µô·¹ÀÌ ÁÖ±â.
+			Sleep(33);	//ì›€ì§ì„ì´ ë„ˆë¬´ ë¹¨ë¼ì„œ ë”œë ˆì´ ì£¼ê¸°.
 			}
 		}
 };
 
 int main() {
 
-	ConsoleSet();	//ÄÜ¼ÖÃ¢ ¼³Á¤ »ı¼ºÀÚ È£Ãâ 
+	ConsoleSet();	//ì½˜ì†”ì°½ ì„¤ì • ìƒì„±ì í˜¸ì¶œ 
 	GamePlay();
 	
 	return 0;
 }
-
-1);		//¶¥ ´Ù½Ã ¸Ê¿¡ ¹İ¿µÇØÁÖ±â. ¿Ö³ÄÇÏ¸é À§¿¡¼­ ¹İº¹ÀûÀ¸·Î ¸Ê ÀüÃ¼¸¦ °ø¹éÀ¸·Î ÃÊ±âÈ­ ÇÏ¹Ç·Î!
-			m1.printMap();
-			
-			Sleep(33);	//¿òÁ÷ÀÓÀÌ ³Ê¹« »¡¶ó¼­ µô·¹ÀÌ ÁÖ±â.
-			}
-		}
-};
-
-int main() {
-
-	ConsoleSet();	//ÄÜ¼ÖÃ¢ ¼³Á¤ »ı¼ºÀÚ È£Ãâ 
-	GamePlay();
-	
-	return 0;
-}
-
 
