@@ -115,7 +115,10 @@ class Character
 		void ControlCharacter() 
 		{	
 			bool move = FALSE;
-			 
+			//무기 출력 위치 
+			weaponX = x+2;
+			weaponY = y+1;
+			
 			if (GetAsyncKeyState(VK_LEFT) && x > 1) 		//kbhit하고 switch문으로도 해봤지만 뭔가 느림 
 			{												//키가 안눌렸을 때만  GetAsyncKeyState 0을 리턴. 
 				x -= 1;		//캐릭터의 출력 x좌표를 1 줄임 
