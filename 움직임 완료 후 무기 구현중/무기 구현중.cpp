@@ -164,10 +164,17 @@ class Character
 			if (direction == TRUE) 		//캐릭터가 우측방향을 보고있으면 
 			{	
 				figure[3] = '('; figure[5] = 'o';		//몸통부분 돌리기  	
+				rightweaponFigure[0] = 'o';
+				rightweaponFigure[3] = '-';
 			} 
 			else 					//캐릭터가 왼쪽방향을 보고있으면 
 			{	
 				figure[3] = 'o'; figure[5] = ')';	 	//몸통부분 돌리기 
+				rightweaponFigure[0] = '-';
+				rightweaponFigure[3] = 'o';
+				weaponX = x-3;
+				weaponY = y+1;
+				
 			}
 			
 		}
