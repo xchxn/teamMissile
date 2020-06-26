@@ -64,7 +64,7 @@ void menu();
 
 int main()
 {
- professor_state Song;             // 주인공인 교수님 생 성 
+ professor_state Song;             // 주인공인 교수님 생성 
  Song.skill[0] = "basic attack";       // 기본 공격과 기본스킬 저장 나중에 수치 정해얄듯 
  Song.skill[1] = "basic skill";
  Song.level  = 0;           // 레벨
