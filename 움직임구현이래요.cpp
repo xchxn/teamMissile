@@ -176,8 +176,15 @@ class Monster {
         int y;      //캐릭터가 출력될 y좌표
         int size_x;      //캐릭터를 출력할 3*3크기 
         int size_y;      //캐릭터 생김새 배열 (3*3크기 출력될 예정) 
-        char monster[10];
+        char monster[16];
         float t_jump;
+        
+		int boss_x;
+        int boss_y;
+        int boss_size_x;
+        int boss_size_y;
+        char boss[36];
+      
 
    public :
       Monster()      //생성자로 초기값 설정 
