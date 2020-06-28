@@ -92,7 +92,7 @@ void FillMap(char str[], char str_s, int max_value);   //str배열을 문자 str_s로 
 void EditMap(int x, int y, char str);   //(x,y)를 문자str로 변경 
 int NumLen(int num);   //num의 자릿수를 리턴하는 함수 (DrawNumber할때 필요)
 
-char sprite_spider[] ={"|                | |      ##      |  --    {  }    --    |  {    }  |      |-{  --  }-|        { ---- }     |  --{ ---- }--  | -/  {  --  }  \\-     / {    } \\       / { 0000 } \\     -   { 00 }   -   |  /{      }\\  | |  |  \\()()/  |  |"};
+char sprite_spider[] ={"|                | |      ##      |  --    {  }    --    |  {    }  |      |-{  --  }-|        { ---- }     |  --{ ---- }--  | -/  {  --  }  \\-     / {    } \\       / { 0000 } \\     -   { 00 }   -   |  /{      }\\  | |  |  \\()()/  |  ||  |   ||||   |  || /    \\/\\/    \\ || |            | |  |            |    |            |  "};
 
 int main() {
    StartGame();
@@ -139,7 +139,7 @@ void UpdateGame() {
       CreateObject(rand() % 90, 5, 100);
    }
    
-   DrawSprite(60, 2, 18,  13, sprite_spider);
+   DrawSprite(60, 2, 18,  18, sprite_spider);
    
    printf("%s",mapData);   //draw mapData
 }
