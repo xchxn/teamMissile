@@ -131,3 +131,16 @@ void Draw_Box(int x, int y, int size_x, int size_y) {		//상태창에 상자 그리는 함
 		EditMap(x, y + i, '|'); EditMap(x + size_x - 1, y + i, '|');
 	}
 }
+
+void Draw_Number(int x, int y, int num) {		//(x,y)에  char형으로 변환된 숫자를 그림 
+	int tmp = num, len = NumLen(tmp), index = len;
+    char str[len];		//숫자 자릿수+1 크기의 문자 배열 (1자리는 널문자) 
+    
+    do {
+        index--;
+        str[index] = (char)(tmp % 10 + 48);
+        tmp /= 10;
+    } while(tmp != 0);
+    
+    Draw_Figure(x, y, len, 1, str);
+}
