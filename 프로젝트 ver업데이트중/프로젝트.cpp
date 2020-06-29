@@ -203,3 +203,136 @@ void Control_UI() 	//기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
 	Draw_Figure(4, 8, 6, 1, "Power:");	//draw power
 	Draw_Number(11, 8, character.power);
 }
+
+void Control_Character()
+{	
+	character.attack = FALSE;	//공격변수를 초기화 (안할 시 공격모션에서 안돌아옴)
+	character.skill_attack1 = FALSE;
+	character.skill_attack2 = FALSE;
+	 
+	//LV up				exp[1]이 현재 exp, exp[0]이 Max exp 
+	if (character.exp[1] >= character.exp[0]) {
+		character.lv += character.exp[1] / character.exp[0];	//보스 잡을시 lv업 많이 되도록 변경 
+		character.hp[0] = 100 + character.lv * 5 ; character.mp[0] = 100 + character.lv * 3; 
+		character.exp[1] = 0; character.exp[0] += character.lv * 10;
+		character.power = 10+(character.lv * 2);
+	}
+	//hp,mp gen & control			0.9초마다 피회복  
+	if (character.tick[0] + 900 < tick) { 
+		character.tick[0] = tick;
+		character.hp[1] += 1;		//
+		character.mp[1] += 3;
+	}
+	if (character.hp[1] > character.hp[0])		//최대 hp,mp를 초과하려하면 최대값으로 고정  
+		character.hp[1] = character.hp[0];
+	if (character.mp[1] > character.mp[0])
+		character.mp[1] = character.mp[0];
+
+	//게임 오버 구현 	
+	if (character.hp[1] < 1)
+		tick = 0;			//tick = 0이되면 main함수에서 while문을 탈출해서 게임 끝나게 되어있음 
+ 
+ 	//깜빡임 
+	if (character.tick[3] > 0)		//몬스터와 충돌이 나면 character.tick[3] = 100이 됌. 
+	{
+		textcolor(15,4); //피격시 빨강색
+		character.tick[3] -= 1;
+	}
+	else 
+	{
+		textcolor(0,15); 
+	}
+	
+	//공격 구현부 
+	if (GetAsyncKeyState(0x5A) && character.tick[1] + 150 <= tick ) {	// 0x5A는 Z의 아스키코드값    공격딜레이 250ms 
+		character.tick[1] = tick;
+		character.attack = TRUE;
+	}
+
+	//스킬공격1 구현부 
+	if (GetAsyncKeyState(0x58) && character.mp[1] > 1 && character.tick[1]+ 30<= tick) {	// 0x5A는 x의 아스키코드값    
+		character.tick[1] = tick;
+		character.skill_attack1 = TRUE;
+		character.mp[1] -= 1;
+	}
+	//스킬공격2 구현부	 
+	if (GetAsyncKeyState(0x41) && character.mp[1] > 2 && character.tick[1]+ 30<= tick) {	// 0x5A는 x의 아스키코드값     
+		character.tick[1] = tick;
+		character.skill_attack2 = TRUE;
+		character.mp[1] -= 2;
+	}
+
+	//움직임구현부 
+	if (GetAsyncKeyState(VK_LEFT) && character.position[0] > 1) {	//왼쪽 화살표 눌리고 x>1이면 왼쪽이동 
+			character.position[0]--;
+			character.direction = FALSE;	//좌측방향 
+		}
+		
+	if (GetAsyncKeyState(VK_RIGHT) && character.position[0] < MAP_X_MAX - 2) {	//오른쪽 화살표 눌리고 x가 맵우측끝보다-2지점보다 작으면 
+			character.position[0]++;
+			character.direction = TRUE;		//우측방향 
+		}
+		
+	if (GetAsyncKeyState(0x43) && character.tick[2] + 1200 <= tick) {	//dash		0x58은 X의 아스키코드값 	1.2초에 한번 사용 가능 
+			character.accel[0] = character.direction * 6 - 3;	//character.accel[0]은 왼쪽방향 대쉬면  -9, 오른쪽 방향 대쉬면  +3  
+			character.tick[2] = tick;
+		}
+		
+	if (GetAsyncKeyState(VK_UP) && character.position[1] + 3 == FLOOR_Y)	//jump
+			character.accel[1] = -1.75;
+	
+	MovementControl(character.position, character.accel, character.size, &character.flyTime);	// control character movement  중력구현 
+	
+	//캐릭터 그리는 부분 
+	if (character.tick[3] % 2 == 0) {		//무적tick이 짝수면 (무적tick이 100에서 1씩 계속 줄어듬. 따라서 캐릭터가 깜빡이게 됌)
+		Draw_Figure(character.position[0], character.position[1], character.size[0], character.size[1], figure_character);	//캐릭터 그림 
+		
+		
+		if (character.direction) {//오른쪽방향이면 몸통 오른쪽으로 
+			EditMap(character.position[0], character.position[1] + 1, '(');
+		} else {				  //왼쪽방향이면  몸통 왼쪽으로 
+			EditMap(character.position[0] + 2, character.position[1] + 1, ')');
+		}
+		
+		if (character.accel[0] > 1)  //x키가 눌리고(dash) 오른쪽 방향을 보고있는 경우- 캐릭터 왼쪽에 샤샤샥효과   
+			Draw_Figure(character.position[0] - 2, character.position[1], 1, 3, "===");
+		if (character.accel[0] < -1) //x키가 눌리고(dash) 왼쪽 방향을 보고있는 경우 - 캐릭터 오른쪽에 샤샤샥효과 
+			Draw_Figure(character.position[0] + 4, character.position[1], 1, 3, "===");
+		
+		//공격모션 그리기 부분  
+		if (character.attack==TRUE ) {
+					EditMap(character.position[0] - 2 + 6 * character.direction, character.position[1] + 1, 'o');
+					Draw_Figure(character.position[0] - 5 + 10 * character.direction, character.position[1] + 1, 3, 1, figure_weapon[character.direction][character.weapon]);
+				} 
+		else {
+					EditMap(character.position[0] + 2 * character.direction, character.position[1] + 1, 'o');
+					Draw_Figure(character.position[0] - 3 + 6 * character.direction, character.position[1] + 1, 3, 1, figure_weapon[character.direction][character.weapon]);
+				}
+		
+		//스킬모션1 그리기 부분 
+		if (character.skill_attack1 == TRUE && character.direction == TRUE)		//스킬 시전,  오른쪽 방향 
+		{	
+			int i;
+			for(i=0; i<MAP_X_MAX - character.position[0]-4; i++);
+			
+			Draw_Figure(character.position[0] +4 ,character.position[1]+0 ,i+3, 1, "---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			Draw_Figure(character.position[0] +4 ,character.position[1]+1 ,i+3, 1, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+			Draw_Figure(character.position[0] +4 ,character.position[1]+2 ,i+3, 1, "---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			}
+		}
+		if (character.skill_attack1 == TRUE && character.direction == FALSE)		//스킬 시전,  ,왼쪽 방향 
+		{	
+			int i;
+			for(i=0; i<MAP_X_MAX - character.position[0]-4; i++);
+			Draw_Figure(0,character.position[1]+0 ,character.position[0]-1, 1, "---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			Draw_Figure(0,character.position[1]+1 ,character.position[0]-1, 1, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+			Draw_Figure(0,character.position[1]+2 ,character.position[0]-1, 1, "---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		}
+		//스킬모션2 그리기 부분 
+		if (character.skill_attack2 == TRUE)
+		{
+			Draw_Figure(107,27,10,5,"|\\_/|\"    |q p|   /}( 0 )\"\"\"\\ |\"^\"`    |||_/=\\\\__|");		//강아지 모양
+			Draw_Figure(0,28,106,2,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+		} 
+			
+}
