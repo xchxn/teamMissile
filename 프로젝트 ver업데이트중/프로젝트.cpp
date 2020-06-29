@@ -62,9 +62,12 @@ const char figure_enemy1[2][13] = {" __ (**)----", " __ [  ]\'--\'"};
 //보스 거미 모양 
 char figure_spider[] ="|                | |      ##      |  --    {  }    --    |  {    }  |      |-{  --  }-|        { ---- }     |  --{ ---- }--  | -/  {  --  }  \\-     / {    } \\       / { 0000 } \\     -   { 00 }   -   |  /{      }\\  | |  |  \\()()/  |  ||  |   ||||   |  || /    \\/\\/    \\ || |            | |  |            |    |            |  ";
 
+
 void StartGame();	//초기 설정 
 void SetConsole();	//콘솔창 세팅  
-
+void Draw_Figure(int x, int y, int size_x, int size_y, const char spr[]);	//(x,y)를 기준으로 size_x*size_y크기로 spr[]을 그림 
+void FillMap(char str[], char ch, int max);	//str배열을 문자 str_s로 max_value만큼 채움 
+void EditMap(int x, int y, char ch);	//(x,y)를 문자str로 변경 
 
 int main()
 {
@@ -82,4 +85,24 @@ void StartGame() {
 	
 	objects = (Object **)malloc(sizeof(Object *) * OBJECT_MAX);		//OBJECT_MAX개의 object포인터 공간 할당  
 	memset(objects, 0, sizeof(Object *) * OBJECT_MAX); 				//objects가 가리키는 놈을 sizeof(object*)*OBJECT_MAX 크기만큼 0으로 초기화 
+}
+
+void SetConsole() {
+	system("mode con:cols=116 lines=36");
+	system("title 교수의 모험");
+	
+	HANDLE hConsole;
+    CONSOLE_CURSOR_INFO ConsoleCursor;
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    
+    ConsoleCursor.bVisible = 0;
+    ConsoleCursor.dwSize = 1;
+    SetConsoleCursorInfo(hConsole , &ConsoleCursor);
+}
+
+void Draw_Figure(int x, int y, int size_x, int size_y, const char spr[]) {	//(x,y)를 기준으로 size_x*size_y크기로 spr[]을 그림 
+	for (int i = 0; i < size_y; i++) {
+		for (int n = 0; n < size_x; n++)
+			EditMap(x + n, y + i, spr[i * size_x + n]);
+	}
 }
