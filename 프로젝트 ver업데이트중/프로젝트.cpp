@@ -73,7 +73,8 @@ void Draw_Number(int x, int y, int num);	//(x,y)에  char형으로 변환된 숫자를 그�
 int NumLen(int num);	//num의 자릿수를 리턴하는 함수 (Draw_Number할때 필요)
 void Control_UI();  //기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
 void Control_Character();	//기능 : 캐릭터의 움직임,스킬,피격 등 구현  
-
+bool CheckCollision(int position1[], int position2[], int size1[], int size2[]);	//충돌 체크 함수 : position1[]의 size1[]크기가 position2[]의 size2[]크기와 충돌이 나면 TRUE  
+void MovementControl(int position[], float accel[], int size[], float *flyTime);	//가속도 함수 
 
 int main()
 {
@@ -336,3 +337,27 @@ void Control_Character()
 		} 
 			
 }
+
+
+void MovementControl(int position[], float accel[], int size[], float *flyTime) {
+	float y_value = accel[1];
+	
+	if (position[1] + size[1] == FLOOR_Y) {
+		*flyTime = 0;		//땅에 닿아있으면 flyTime = 0 
+	} else {				//떨어져 있으면 flyTime += 0.05 
+		*flyTime += 0.05;
+		accel[1] += *flyTime; 
+	}
+	
+	if (y_value != 0) {
+		if (position[1] + size[1] + y_value > FLOOR_Y)		//땅으로 꺼져서 추락하는거 방지  
+			y_value = FLOOR_Y - position[1] - size[1];
+	}
+
+	position[0] += accel[0] + 0.5; position[1] += y_value + 0.5;	  
+	
+	//accel이 0이되면 아래 문장들은 실행이 안됌. 
+	if (accel[0] > 0) accel[0] -= 0.2; if (accel[0] < 0) accel[0] += 0.2;
+	if (accel[1] > 0) accel[1] -= 0.1; if (accel[1] < 0) accel[1] += 0.1;
+}
+
