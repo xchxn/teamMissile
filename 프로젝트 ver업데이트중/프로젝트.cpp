@@ -361,3 +361,14 @@ void MovementControl(int position[], float accel[], int size[], float *flyTime) 
 	if (accel[1] > 0) accel[1] -= 0.1; if (accel[1] < 0) accel[1] += 0.1;
 }
 
+bool CheckCollision(int position1[], int position2[], int size1[], int size2[]) {	//충동 체크 함수 
+	if (position1[0] > position2[0] - size1[0] && position1[0] < position2[0] + size2[0]	//position2[0]-size1[0] = 몬스터 시작지점-캐릭터 가로크기 , position2[0]+size2[0] = 몬스터의 우측 끝
+	    && position1[1] > position2[1] - size1[1] && position1[1] < position2[1] + size2[1])	//y값 충돌 
+		{
+			return TRUE;
+		}
+	else
+	{
+		return FALSE;
+	}
+}
