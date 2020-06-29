@@ -72,6 +72,7 @@ void Draw_Box(int x, int y, int size_x, int size_y);	//상태창에 상자 그리는 함수
 void Draw_Number(int x, int y, int num);	//(x,y)에  char형으로 변환된 숫자를 그림
 int NumLen(int num);	//num의 자릿수를 리턴하는 함수 (Draw_Number할때 필요)
 void Control_UI();  //기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
+void Control_Character();	//기능 : 캐릭터의 움직임,스킬,피격 등 구현  
 
 
 int main()
