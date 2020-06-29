@@ -68,10 +68,13 @@ void SetConsole();	//콘솔창 세팅
 void Draw_Figure(int x, int y, int size_x, int size_y, const char spr[]);	//(x,y)를 기준으로 size_x*size_y크기로 spr[]을 그림 
 void FillMap(char str[], char ch, int max);	//str배열을 문자 str_s로 max_value만큼 채움 
 void EditMap(int x, int y, char ch);	//(x,y)를 문자str로 변경 
+void Draw_Box(int x, int y, int size_x, int size_y);	//상태창에 상자 그리는 함수 (x,y)에 size_x*size_y크기의 상자 그림
+void Draw_Number(int x, int y, int num);	//(x,y)에  char형으로 변환된 숫자를 그림
+int NumLen(int num);	//num의 자릿수를 리턴하는 함수 (Draw_Number할때 필요)
 
 int main()
 {
-	
+	printf("f"); 
 }
 
 void StartGame() {
@@ -115,4 +118,16 @@ void FillMap(char str[], char ch, int max) {	//str배열을 문자 ch로 max만큼 채움
 void EditMap(int x, int y, char ch) {	//(x,y)를 문자ch로 변경 
 	if (x > 0 && y > 0 && x - 1 < MAP_X_MAX && y - 1 < MAP_Y_MAX)
 		mapData[(y - 1) * MAP_X_MAX + x - 1] = ch;
+}
+
+void Draw_Box(int x, int y, int size_x, int size_y) {		//상태창에 상자 그리는 함수 (x,y)에 size_x*size_y크기의 상자 그림 
+	EditMap(x, y, '.'); EditMap(x + size_x - 1, y, '.');
+	EditMap(x, y + size_y - 1, '\''); EditMap(x + size_x - 1, y + size_y - 1, '\'');
+	
+	for (int i = 1; i < size_x - 1; i++) {
+		EditMap(x + i, y, '-'); EditMap(x + i, y + size_y - 1, '-');
+	}
+	for (int i = 1; i < size_y - 1; i++) {
+		EditMap(x, y + i, '|'); EditMap(x + size_x - 1, y + i, '|');
+	}
 }
