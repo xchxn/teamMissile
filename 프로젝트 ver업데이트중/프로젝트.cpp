@@ -106,3 +106,8 @@ void Draw_Figure(int x, int y, int size_x, int size_y, const char spr[]) {	//(x,
 			EditMap(x + n, y + i, spr[i * size_x + n]);
 	}
 }
+
+void FillMap(char str[], char ch, int max) {	//str배열을 문자 ch로 max만큼 채움 
+	for (int i = 0; i < max; i++)
+		str[i] = ch;
+}
