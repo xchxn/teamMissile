@@ -71,6 +71,8 @@ void EditMap(int x, int y, char ch);	//(x,y)를 문자str로 변경
 void Draw_Box(int x, int y, int size_x, int size_y);	//상태창에 상자 그리는 함수 (x,y)에 size_x*size_y크기의 상자 그림
 void Draw_Number(int x, int y, int num);	//(x,y)에  char형으로 변환된 숫자를 그림
 int NumLen(int num);	//num의 자릿수를 리턴하는 함수 (Draw_Number할때 필요)
+void Control_UI();  //기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
+
 
 int main()
 {
@@ -159,3 +161,44 @@ int NumLen(int num) {		//num의 자릿수를 리턴하는 함수 (Draw_Number할때 필요)
 	
     return len;
 } 
+
+void Control_UI() 	//기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신 
+{
+	int expPer = (character.exp[1] * 100 / character.exp[0]);		//exp[1]은 현재 exp, exp[0]은 최대exp(레벨업) 
+	int len;	//length of previous sprite
+	
+	Draw_Figure(1, FLOOR_Y, MAP_X_MAX, 1, figure_floor);	//draw floor
+	
+	Draw_Box(1, 2, 35, 8); Draw_Box(27, 5, 7, 4);	//draw weaponinven
+	Draw_Figure(28, 6, 5, 2, figure_invenWeapon[character.weapon]);		//character.weapon이 0,1,2로 각자 무기 모양 배열 나타냄 
+	Draw_Figure(28, 4, 6, 1, "Weapon");
+	
+	EditMap(3, 3, '\"');	//draw name, lv, exp
+	Draw_Figure(4, 3, strlen(character.name), 1, character.name);	len = 4 + strlen(character.name);//len이 x좌표를 나타냄. 각 문자열 길이만큼 len++시키면서 문자열을 알맞은 위치에 출력 
+	Draw_Figure(len, 3, 7, 1, "\" LV.");	len += 5;
+	Draw_Number(len, 3, character.lv);	len += NumLen(character.lv);
+	Draw_Figure(len, 3, 2, 1, " (");	len += 2;
+	
+	if (!expPer) {	//경험치 0%면 
+		EditMap(len, 3, '0');	len ++;		 
+	} else {
+		Draw_Number(len, 3, expPer);	len += NumLen(expPer);
+	}
+	Draw_Figure(len, 3, 2, 1, "%)");
+	
+	Draw_Figure(MAP_X_MAX - NumLen(character.score) - 7, 3, 6, 1, "SCORE:");	//draw score
+	Draw_Number(MAP_X_MAX - NumLen(character.score), 3, character.score);
+	
+	Draw_Figure(4, 5, 3, 1, "HP:");	//draw HP
+	Draw_Number(8, 5, character.hp[1]);
+	EditMap(9 + NumLen(character.hp[1]), 5, '/');
+	Draw_Number(11 + NumLen(character.hp[1]), 5, character.hp[0]);
+	
+	Draw_Figure(4, 6, 3, 1, "MP:");	//draw MP
+	Draw_Number(8, 6, character.mp[1]);
+	EditMap(9 + NumLen(character.mp[1]), 6, '/');
+	Draw_Number(11 + NumLen(character.mp[1]), 6, character.mp[0]);
+	
+	Draw_Figure(4, 8, 6, 1, "Power:");	//draw power
+	Draw_Number(11, 8, character.power);
+}
