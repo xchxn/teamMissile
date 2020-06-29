@@ -62,3 +62,24 @@ const char figure_enemy1[2][13] = {" __ (**)----", " __ [  ]\'--\'"};
 //보스 거미 모양 
 char figure_spider[] ="|                | |      ##      |  --    {  }    --    |  {    }  |      |-{  --  }-|        { ---- }     |  --{ ---- }--  | -/  {  --  }  \\-     / {    } \\       / { 0000 } \\     -   { 00 }   -   |  /{      }\\  | |  |  \\()()/  |  ||  |   ||||   |  || /    \\/\\/    \\ || |            | |  |            |    |            |  ";
 
+void StartGame();	//초기 설정 
+void SetConsole();	//콘솔창 세팅  
+
+
+int main()
+{
+	
+}
+
+void StartGame() {
+	SetConsole();			//콘솔창 가로 세로 크기 설정, 커서 안보이게 설정 
+	srand((int)time(NULL));
+	
+	printf("이름을 입력하세요 : ");
+	scanf("%s", character.name);
+	
+	FillMap(figure_floor, '=', MAP_X_MAX);	//땅배열에 '=' 채우기 
+	
+	objects = (Object **)malloc(sizeof(Object *) * OBJECT_MAX);		//OBJECT_MAX개의 object포인터 공간 할당  
+	memset(objects, 0, sizeof(Object *) * OBJECT_MAX); 				//objects가 가리키는 놈을 sizeof(object*)*OBJECT_MAX 크기만큼 0으로 초기화 
+}
