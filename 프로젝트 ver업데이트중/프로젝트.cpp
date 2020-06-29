@@ -144,3 +144,18 @@ void Draw_Number(int x, int y, int num) {		//(x,y)에  char형으로 변환된 숫자를 �
     
     Draw_Figure(x, y, len, 1, str);
 }
+
+int NumLen(int num) {		//num의 자릿수를 리턴하는 함수 (Draw_Number할때 필요) 
+	int tmp = num, len = 0;
+	
+	if (num == 0) {
+		return 1;
+	} else {
+		while(tmp != 0) {
+        	tmp /= 10;
+        	len++;
+    	}
+	}
+	
+    return len;
+} 
