@@ -1,6 +1,6 @@
 #include <iostream>
 #include <windows.h>
-#include <string>
+
 
 using namespace std;
 
@@ -15,7 +15,7 @@ void PrintEnding(int n,int x,int y)
 {
 	Goto(x,y);
 	for(int i=0;i<n;i++){
-		cout<<a[i]<<"\n";
+		cout<<"\t\t\t"<<a[i]<<"\n";
 	}
 	Sleep(1000);
 	system("cls");
@@ -24,7 +24,7 @@ void PrintEnding2(int n,int x,int y)
 {
 	Goto(x,y);
 	for(int i=n;i<6;i++){
-		cout<<a[i]<<"\n";
+		cout<<"\t\t\t"<<a[i]<<"\n";
 	}
 	Sleep(1000);
 	system("cls");
@@ -38,10 +38,10 @@ int main()
 	PrintEnding(4,1,28);
 	PrintEnding(5,1,27);
 	PrintEnding(6,1,26);
-	PrintEnding2(0,1,25);
-	PrintEnding2(1,1,24);
-	PrintEnding2(2,1,23);
-	PrintEnding2(3,1,22);
-	PrintEnding2(4,1,21);
-	PrintEnding2(5,1,20);
+	PrintEnding2(0,1,24);
+	PrintEnding2(1,1,23);
+	PrintEnding2(2,1,22);
+	PrintEnding2(3,1,21);
+	PrintEnding2(4,1,20);
+	PrintEnding2(5,1,19);
 }

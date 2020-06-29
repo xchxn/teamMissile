@@ -1,6 +1,4 @@
 #include <iostream>
-#include <math.h>
-#include <ctime>
 #include <windows.h>
 
 using namespace std;
