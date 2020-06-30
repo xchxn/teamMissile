@@ -88,7 +88,24 @@ void textcolor(int foreground, int background);   //텍스트컬러
 
 int main()
 {
-	printf("f"); 
+	StartGame();
+
+   while (TRUE) {
+      if (tick +30 < GetTickCount()) {   //30ms에 한번씩 updategame되도록 설정   
+         tick = GetTickCount();         //컴퓨터 부팅 후 경과한 시간을 ms로 반환. 따라서 tick은 1초에 1000씩 증가함 
+         
+         UpdateGame();
+
+         if (tick == 0)               //character의 hp[1]이 1미만이 되면 tick = 0 
+            break;
+        
+        if (character.lv > 500)			//아수라 보스 잡으면 lv500 이상 되게해서 엔딩 
+        	break;
+      }
+   }
+   
+   ExitGame();
+   return 0;
 }
 
 void StartGame() {
