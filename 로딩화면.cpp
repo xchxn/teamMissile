@@ -88,19 +88,25 @@ void PrintLogo2()
 }
 void Loading()
 {
-	Goto(30,24);
 	for(int i=0;i<=100;i=i+3){
 		system("cls");
 		PrintLogo2();
+		Goto(30,24);
 		cout<<"Loading..."<<i<<"% now";
 		Sleep(100);
 	}
-	getchar();
 }
-
+void LoadEnd()
+{
+	system("cls");
+	PrintLogo2();
+	Goto(30,24);
+	cout<<"Loading complete\nPress any key to start game";
+}
 int main()
 {
 	PrintLogo();
 	Loading();
+	LoadEnd();
 }
 
