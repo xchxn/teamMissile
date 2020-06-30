@@ -397,3 +397,170 @@ void Control_Item(int index) {
    MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
 }
 
+void Control_Enemy(int index) {
+   int x = objects[index]->position[0], y = objects[index]->position[1];
+   int attack_position[2] = {character.position[0] - 5 + 8 * character.direction, character.position[1]}, attack_size[2] = {5, 3};      //캐릭터 기본 공격 범위 : 캐릭터 앞부분에서 5*3크기 
+   //스킬 범위 
+   int skill1_left_position[2] = {0,character.position[1]};
+   int skill1_right_position[2] = {character.position[0]+2,character.position[1]};
+   int skill1_left_size[2] = {character.position[0]-2,3};
+   int skill1_right_size[2] = {MAP_X_MAX - character.position[0]-2,3};
+   int skill2_position[2] = {0,28};
+   int skill2_size[2]   = {106,3}; 
+   
+   int item_code = rand() % 100;
+
+   if (objects[index]->hp[1] < 1) {   //몬스터가 죽으면 
+      for (int i = 0; i < 3; i++)      //동전 3개 떨어짐 
+         Create_Object(x + objects[index]->size[0] / 2, y + objects[index]->size[1] / 2, 200); 
+         
+      //item_code가 90이상이거나 3이하이면 아이템 떨구게함   
+      if (item_code >= 90)
+         Create_Object(x + objects[index]->size[0] / 2 - 2, y, 1);   //1번무기 
+      if (item_code <= 3)
+         Create_Object(x + objects[index]->size[0] / 2 - 2, y, 2);   //2번무기  
+      
+      
+      character.exp[1] += objects[index]->exp;
+      
+      Remove_Object(index);
+      return;
+      }
+   
+   if (objects[index]->tick[0] + 2000 > tick) //몬스터가 공격받은 후 2초동안  
+      Draw_Number(x + objects[index]->size[0] / 2 - NumLen(objects[index]->hp[1]) / 2, y - 1, objects[index]->hp[1]);   //몬스터 머리위에 hp뜨게함 
+   
+   if (character.attack == TRUE && CheckCollision(objects[index]->position, attack_position, objects[index]->size, attack_size)) {      //캐릭터가 공격중 && 몬스터위치와 캐릭터 공격범위가 충돌나면 
+      objects[index]->tick[0] = tick;      //몬스터 hp tick이 tick과 같아지므로 2초동안 머리위에 hp뜸 
+      objects[index]->hp[1] -= character.power;
+      objects[index]->accel[1] = - 0.55;      //y가속도 : 공중에 조금 뜸 
+      
+      //x 가속도 : 옆으로 조금 밀려남  
+      if (EnemyPosition(x,  objects[index]->size[0]))      //몬스터가 좌측에 위치시  
+         objects[index]->accel[0] = -0.75;      
+      else                                    //몬스터 우측에 위치시 
+         objects[index]->accel[0] = 0.75;
+   }
+   //왼쪽 스킬1 공격 피격 판정 
+   if (character.skill_attack1 == TRUE && character.direction == FALSE && CheckCollision(objects[index]->position, skill1_left_position, objects[index]->size, skill1_left_size))
+   {
+      objects[index]->tick[0] = tick;
+      objects[index]->hp[1] -= 5;
+      //몬스터 약간 뜸 
+      objects[index]->accel[1] = - 0.55;
+      //몬스터 약간 밀려남 
+      objects[index]->accel[0] = -0.75;
+   }
+   //오른쪽 스킬1 공격 피격 판정
+   if (character.skill_attack1 == TRUE && character.direction == TRUE && CheckCollision(objects[index]->position, skill1_right_position, objects[index]->size, skill1_right_size))
+   {
+      objects[index]->tick[0] = tick;
+      objects[index]->hp[1] -= 10;
+      
+      objects[index]->accel[1] = - 0.55;
+      objects[index]->accel[0] = 0.75;
+   }
+   //강아지 스킬 공격 피격 판정 
+   if (character.skill_attack2 == TRUE && CheckCollision(objects[index]->position, skill2_position, objects[index]->size, skill2_size))
+   {
+      objects[index]->tick[0] = tick;
+      objects[index]->hp[1] -= 20;
+      
+      objects[index]->accel[1] = - 0.55;
+      objects[index]->accel[0] = -0.75;
+   
+   }
+   //kind == 100 : 슬라임
+   if (objects[index]->kind == 100) {
+      
+      //모션값에 따라 슬라임 모양 다르게 그리기 위해서 
+      if (y + objects[index]->size[1] == FLOOR_Y)
+         objects[index]->isJumping = 0;   //슬라임이 땅에 붙어있으면 isJumping = 0 
+      else 
+         objects[index]->isJumping = 1;
+
+      //슬라임 움직임 구현 
+      if (objects[index]->tick[1] + objects[index]->tick[2] < tick) {
+         objects[index]->tick[1] = tick;
+         objects[index]->tick[2] = 1000 + rand()%2000;   //if문이 1초+(0~2초)에 한번씩 실행. 따라서 각 슬라임이 0~3초에 한번씩 움직임 
+         
+         //슬라임 y가속도 설정(점프) 
+         objects[index]->accel[1] = - 0.75;
+         //슬라임 x가속도 설정(x축 이동) 
+         if (EnemyPosition(x,  objects[index]->size[0]))
+            objects[index]->accel[0] = 1.5;
+         else
+            objects[index]->accel[0] = -1.5;
+      }
+      
+      //슬라임과 캐릭터 충돌 
+      if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
+         character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
+         character.hp[1] -= 10;
+      }
+      
+      Draw_Figure(x, y, objects[index]->size[0], objects[index]->size[1], figure_enemy1[objects[index]->isJumping]);
+      MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
+   }
+   
+   //거미보스 : kind 400    (여기에 스킬용 오브젝트 할당하면 될듯)
+   if(objects[index] -> kind == 400)
+   {
+      if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
+         character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
+         character.hp[1] -= 30;
+      }
+    //거미줄 및 거미보스 그리기 
+	Draw_Figure(45, 1, 1, 20, "||||||||||||||||||||||||||||||");
+    Draw_Figure(47, 1, 1, 19, "|||||||||||||||||||||||||||||");
+    Draw_Figure(46, 20, 1, 1, "/");
+    Draw_Figure(7, 9, 1, 14, "|||||||||||||||||||");
+    Draw_Figure(9, 9, 1, 13, "||||||||||||||||||");
+    Draw_Figure(8, 22, 1, 1, "/");
+	Draw_Figure(22, 9, 1, 18, "||||||||||||||||||||||||||||");
+	Draw_Figure(23, 26, 2, 1, "__"); 				    
+	Draw_Figure(24, 9, 1, 18, "||||||||||||||||||||||||||||");      
+    Draw_Figure(x,y,objects[index]->size[0],objects[index]->size[1],figure_spider);
+   }
+   
+   //아수라보스 : kind 401    (여기에 스킬용 오브젝트 할당하면 될듯)
+    if(objects[index] -> kind == 401)
+   {
+   	
+    if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
+         character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
+         character.hp[1] -= 50;
+      	}
+	
+    Draw_Figure(x,y,objects[index]->size[0],objects[index]->size[1],figure_asura);
+   } 
+   
+}
+
+void Control_Particle(int index) {    
+   int x = objects[index]->position[0], y = objects[index]->position[1];
+   int money_size[2] = {2, 2};
+   int money_position[2] = {x, y - 1};
+   int number = rand() % 3;
+   
+   
+   //동전 
+   if (objects[index]->kind == 200) { 
+      if (objects[index]->tick[1] < tick) {
+         objects[index]->tick[1] = tick * 2;      //if문이 계속 실행되면 가속도값이 계속 초기화 되므로 동전이 점프를 하게됌... 따라서 다시 실행 안되도록 tick값 설정 
+         objects[index]->accel[0] =  number;   //동전 뜨는 x위치 조금씩 랜덤하게 
+         objects[index]->accel[1] =  -3;         //동전이 위로 떳다가 떨어지도록 
+      }
+      
+      if (CheckCollision(money_position, character.position, money_size, character.size)) {
+         character.score += 100; 
+         
+         Remove_Object(index);
+         return;
+      }
+      
+      EditMap(x, y - 1, '@');
+   }
+   //동전 중력 
+   MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
+}
