@@ -101,7 +101,10 @@ void LoadEnd()
 	system("cls");
 	PrintLogo2();
 	Goto(30,24);
-	cout<<"Loading complete\nPress any key to start game";
+	cout<<"Loading complete";
+	Goto(30,22);
+	cout<<"Press any key to start game";
+	getchar();
 }
 int main()
 {
