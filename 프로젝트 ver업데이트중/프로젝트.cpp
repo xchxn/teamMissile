@@ -33,7 +33,7 @@ typedef struct _Object {	//enemies, projectiles, particles, etc.
 	
     int kind;	//1~99: items, 100~199: enemies, 200~: projectiles, particles
     int hp[2], exp;	//hp: this value is used randomly for item or particle object
-    int motion[3];	//motion
+    int isJumping;	//슬라임이 점프중이라면 TRUE (점프뛸때 다르게 그려주기 위함)
     int tick[4];	//0: hpshow time(enemy) or active time(projecticles, particles)
 }Object;
 
