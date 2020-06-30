@@ -65,6 +65,8 @@ char figure_spider[] ="|                | |      ##      |  --    {  }    --    
 
 void StartGame();	//초기 설정 
 void SetConsole();	//콘솔창 세팅  
+void UpdateGame();   //게임판인 mapData 업데이트 후 출력(전체적인 게임 진행 상황 업데이트) 
+void ExitGame();   //objects 동적메모리 헤제  
 void Draw_Figure(int x, int y, int size_x, int size_y, const char spr[]);	//(x,y)를 기준으로 size_x*size_y크기로 spr[]을 그림 
 void FillMap(char str[], char ch, int max);	//str배열을 문자 str_s로 max_value만큼 채움 
 void EditMap(int x, int y, char ch);	//(x,y)를 문자str로 변경 
@@ -113,6 +115,44 @@ void SetConsole() {
     ConsoleCursor.bVisible = 0;
     ConsoleCursor.dwSize = 1;
     SetConsoleCursorInfo(hConsole , &ConsoleCursor);
+}
+
+void UpdateGame() {
+   FillMap(mapData, ' ', MAP_X_MAX * MAP_Y_MAX);   //맵을 공백으로 초기화 
+   
+   Control_Character();   //mapData에 캐릭터 정보 업데이트 
+   Control_Object();   //mapData에 적,동전,아이템 등 업데이트
+   Control_UI();      //땅배열 및 상태창 업데이트  
+   
+   if (spon_tick + 5000 < tick) {      //15초마다 몬스터 스폰 
+      spon_tick = tick;
+      Create_Object(rand() % 90, 5, 100);      //(x: 0~90 , y:5) kind = 100 : 몬스터    
+      Create_Object(rand() % 90, 5, 100);
+      Create_Object(rand() % 90, 5, 100);
+   }
+   
+   if(character.score >= 1800 && character.score <= 2400 && boss_tick < tick)      //스코어 1800이상 되면 첫번쨰 보스 출현 kind 400 
+   {
+      Create_Object(MAP_X_MAX-22 ,9,400);
+      boss_tick += 100000000;
+   }
+   
+   if(character.score >= 6500 && character.score <= 8000 && boss_tick2 < tick)      //스코어 6500이상 되면 두번쨰 보스 출현 kind 401 
+   {
+      Create_Object(MAP_X_MAX-31 ,3,401);
+      boss_tick2 += 100000000;
+   }
+   
+   printf("%s",mapData);   //draw mapData
+}
+
+void ExitGame() {   //objects 동적메모리 헤제  
+    for (int i = 0; i < OBJECT_MAX; i++) {
+        if (objects[i])
+            free(objects[i]);
+    }
+    
+    free(objects);
 }
 
 void Draw_Figure(int x, int y, int size_x, int size_y, const char spr[]) {	//(x,y)를 기준으로 size_x*size_y크기로 spr[]을 그림 
