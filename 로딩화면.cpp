@@ -13,6 +13,68 @@ char f[111]={"       ¡á    ¡á        ¡á¡á¡á¡á¡á¡á¡á¡á¡á        ¡á¡á      ¡á     
 char g[111]={"       ¡á    ¡á                ¡á                          ¡á                 ¡á                   ¡á      ¡á\n"};
 char h[111]={" ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á          ¡á          ¡á¡á¡á¡á¡á¡á¡á¡á¡á         ¡á¡á¡á¡á¡á¡á¡á¡á¡á           ¡á¡á¡á¡á¡á\n"};
 
+void Goto(int x,int y)
+{
+    COORD pos={x,y};
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
+}
 
+void PrintLogo()
+{
 
+	cout<<"\n\n\n ";
+		
+	for(int i=0;i<111;i++){ 
+		cout<<a[i];
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		cout<<b[i];
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		cout<<c[i];
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		cout<<d[i];
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		cout<<e[i];
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		cout<<f[i];
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		cout<<g[i];
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		cout<<h[i];
+		Sleep(5);
+	}
+}
+void PrintLogo2()
+{
+	
+}
+void Loading()
+{
+	Goto(30,24);
+	
+	for(int i=0;i<=100;i=i+3){
+		cout<<"Loading..."<<i<<"% now";
+		Sleep(100);
+		system("cls");
+	}
+}
+
+int main()
+{
+	PrintLogo();
+	Loading();
+}
 
