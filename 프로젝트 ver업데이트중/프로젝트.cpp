@@ -506,6 +506,26 @@ void Create_Object(int x, int y, int kind) {      //x,y좌표에 kind값에 따라 오브
        	obj->size[0] = 30;
       	obj->size[1] = 30;
    }
+   
+   //거미 보스 스킬 
+   if(kind == 500) 
+   {
+      	obj->hp[0] = 1000;      
+      	obj->hp[1] = obj->hp[0];
+      	obj->exp = 100000; 
+       	obj->size[0] = 30;
+      	obj->size[1] = 30;
+   }
+   
+    //아수라 보스 스킬 
+   if(kind == 501) 
+   {
+      	obj->hp[0] = 1;      
+      	obj->hp[1] = obj->hp[0];
+      	obj->exp = 0; 
+       	obj->size[0] = 30;
+      	obj->size[1] = 30;
+   }
 }
 
 void Control_Item(int index) {
