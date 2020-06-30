@@ -59,17 +59,44 @@ void PrintLogo()
 }
 void PrintLogo2()
 {
-	
+	cout<<"\n\n\n";
+		
+	for(int i=0;i<111;i++){ 
+		cout<<a[i];
+	}
+	for(int i=0;i<111;i++){
+		cout<<b[i];
+	}
+	for(int i=0;i<111;i++){
+		cout<<c[i];
+	}
+	for(int i=0;i<111;i++){
+		cout<<d[i];
+	}
+	for(int i=0;i<111;i++){
+		cout<<e[i];
+	}
+	for(int i=0;i<111;i++){
+		cout<<f[i];
+	}
+	for(int i=0;i<111;i++){
+		cout<<g[i];
+	}
+	for(int i=0;i<111;i++){
+		cout<<h[i];
+	}
 }
 void Loading()
 {
 	Goto(30,24);
-	
+	system("cls");
 	for(int i=0;i<=100;i=i+3){
+		PrintLogo2();
 		cout<<"Loading..."<<i<<"% now";
 		Sleep(100);
 		system("cls");
 	}
+	getchar();
 }
 
 int main()
