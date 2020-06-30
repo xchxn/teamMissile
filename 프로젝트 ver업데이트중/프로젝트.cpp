@@ -78,6 +78,8 @@ void MovementControl(int position[], float accel[], int size[], float *flyTime);
 void Control_Item(int index);
 void Control_Enemy(int index);
 void Control_Particle(int index);
+void Control_Object();   //모든 오브젝트 컨트롤 함수
+
 int main()
 {
 	printf("f"); 
@@ -563,4 +565,17 @@ void Control_Particle(int index) {
    }
    //동전 중력 
    MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
+}
+
+void Control_Object() {   //모든 오브젝트 컨트롤 함수 
+   for(int i = 0; i < OBJECT_MAX; i++) {
+      if (objects[i]) {
+         if (objects[i]->kind < 100)   //0~99는 아이템 
+            Control_Item(i);
+         else if (objects[i]->kind == 200)   //200은 동전 
+            Control_Particle(i);
+         else
+            Control_Enemy(i);      //나머지는 적(슬라임,보스,보스스킬오브젝트)
+      }
+   }
 }
