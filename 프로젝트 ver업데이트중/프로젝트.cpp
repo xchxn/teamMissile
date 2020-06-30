@@ -374,3 +374,26 @@ bool CheckCollision(int position1[], int position2[], int size1[], int size2[]) 
 		return FALSE;
 	}
 }
+
+void Control_Item(int index) {
+   int x = objects[index]->position[0], y = objects[index]->position[1];
+   int item_position[2] = {x, y - 2};
+   int item_size[2] = {5, 2};
+   
+   if (CheckCollision(item_position, character.position, item_size, character.size)) {      //아이템과 캐릭터가 충돌이 나면 
+      Draw_Figure(x + 1, y - 5, 3, 1, "[E]");      //아이템 위에 [E] 표시  
+      
+      if (GetAsyncKeyState(0x45)) {      //E키가 눌리면 
+         character.weapon = objects[index]->kind;   //character.weapon = 무기번호(kind값) 
+      
+         Remove_Object(index);
+         return;
+      }   
+   }
+   
+   Draw_Figure(x, y - 2, 5, 2, figure_invenWeapon[objects[index]->kind]);
+
+   
+   MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
+}
+
