@@ -10,7 +10,7 @@
 #### Developing now :european_castle: 교수의 모험 :european_castle:
 
 #### Intro 
-C 콘솔 기반 2D  
+C 콘솔 기반 2D 횡 스크롤 게임  
 ### Progress
 |Week 1 (~6.1) | Online Meeting |
 | :------------ | :----------: |
