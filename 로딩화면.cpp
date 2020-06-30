@@ -89,12 +89,11 @@ void PrintLogo2()
 void Loading()
 {
 	Goto(30,24);
-	system("cls");
 	for(int i=0;i<=100;i=i+3){
+		system("cls");
 		PrintLogo2();
 		cout<<"Loading..."<<i<<"% now";
 		Sleep(100);
-		system("cls");
 	}
 	getchar();
 }
