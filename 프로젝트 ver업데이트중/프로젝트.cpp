@@ -668,6 +668,29 @@ void Control_Enemy(int index) {
     Draw_Figure(x,y,objects[index]->size[0],objects[index]->size[1],figure_asura);
    } 
    
+   //거미 보스 스킬
+   if (objects[index]->kind == 500) {
+      
+      //스킬과 캐릭터 충돌시 
+      if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
+         character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
+         character.hp[1] -= 15;
+      }
+    Draw_Figure(x, y, objects[index]->size[0], objects[index]->size[1], figure_sword);
+    MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime); //중력 
+   } 
+   
+   //아수라 보스 스킬 
+   if (objects[index]->kind == 501) {
+      
+      //스킬과 캐릭터 충돌시 
+      if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
+         character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
+         character.hp[1] -= 15;
+      }
+    Draw_Figure(x, y, objects[index]->size[0], objects[index]->size[1], figure_sword);
+    MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime); //중력 
+   } 
 }
 
 void Control_Particle(int index) {    
