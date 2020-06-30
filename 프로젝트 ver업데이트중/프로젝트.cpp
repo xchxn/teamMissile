@@ -75,6 +75,7 @@ void Control_UI();  //기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
 void Control_Character();	//기능 : 캐릭터의 움직임,스킬,피격 등 구현  
 bool CheckCollision(int position1[], int position2[], int size1[], int size2[]);	//충돌 체크 함수 : position1[]의 size1[]크기가 position2[]의 size2[]크기와 충돌이 나면 TRUE  
 void MovementControl(int position[], float accel[], int size[], float *flyTime);	//가속도 함수 
+void Create_Object(int x, int y, int kind);      //x,y좌표에 kind값에 따라 오브젝트 생성 (1~99: 아이템, 100~199: 몬스터, 200~299: 동전, 400~500:보스 500~:보스 스킬)
 void Control_Item(int index);
 void Control_Enemy(int index);
 void Control_Particle(int index);
@@ -375,6 +376,64 @@ bool CheckCollision(int position1[], int position2[], int size1[], int size2[]) 
 	{
 		return FALSE;
 	}
+}
+
+void Create_Object(int x, int y, int kind) {      //x,y좌표에 kind값에 따라 오브젝트 생성 (1~99: 아이템, 100~199: 몬스터, 200~299: 동전, 400:거미보스 401:아수라보스 500~: 보스 스킬들)
+   int index = 0;
+   Object *obj = 0;
+   
+   while(TRUE) {
+      if (! objects[index])
+         break;
+         
+      if (index == OBJECT_MAX)
+         return;
+
+       index ++;
+   }
+   
+    obj = (Object *)malloc(sizeof(Object));    //obj가 새로운 object를 가리킴  
+    objects[index] = obj;                    //이중포인터 배열 objects가 obj가 가리키는 주소를 가리킴  
+    memset(obj, 0, sizeof(Object));          //object를 0으로 초기화 
+    
+    obj->kind = kind;                     //object종류에 kind 넣음 
+    obj->position[0] = x; obj->position[1] = y;
+    obj->tick[0] = 0;
+    
+    if (kind <400 && (kind < 100 || kind > 199)) {      //0~100,200~399 -->  몬스터아님  
+      obj->tick[1] = 0;   //동전 가속도 딜레이 
+   }
+   
+    if (kind >= 100 && kind < 200) {      //kind가 100~199  -->  몬스터  
+       obj->hp[0] = 150;      //몬스터를 일단 kind100을 슬라임으로 해놨음 
+      obj->hp[1] = obj->hp[0];
+       obj->exp = 30;
+       obj->size[0] = 4;
+      obj->size[1] = 3;
+       obj->tick[1] = 0;
+       obj->tick[2] = 1000;
+       obj->tick[3] = 0;
+   }
+   
+   //거미 보스 
+   if(kind == 400) //spider 보스는 kind 400 
+   {
+      obj->hp[0] = 500;      
+      obj->hp[1] = obj->hp[0];
+      obj->exp = 300; 
+      obj->size[0] = 18;
+      obj->size[1] = 18;
+   }
+   
+   //아수라 보스 
+   if(kind == 401) // 아수라 보스는 kind 401 
+   {
+      	obj->hp[0] = 1000;      
+      	obj->hp[1] = obj->hp[0];
+      	obj->exp = 100000; 
+       	obj->size[0] = 30;
+      	obj->size[1] = 30;
+   }
 }
 
 void Control_Item(int index) {
