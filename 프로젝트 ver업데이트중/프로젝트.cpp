@@ -75,6 +75,7 @@ void Control_UI();  //기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
 void Control_Character();	//기능 : 캐릭터의 움직임,스킬,피격 등 구현  
 bool CheckCollision(int position1[], int position2[], int size1[], int size2[]);	//충돌 체크 함수 : position1[]의 size1[]크기가 position2[]의 size2[]크기와 충돌이 나면 TRUE  
 void MovementControl(int position[], float accel[], int size[], float *flyTime);	//가속도 함수 
+bool EnemyPosition(int x, int size_x);   //캐릭터의 위치와 몬스터의 위치를 비교.  캐릭터가 왼쪽에 있으면 FALSE, 오른쪽에 있으면 TRUE 
 void Create_Object(int x, int y, int kind);      //x,y좌표에 kind값에 따라 오브젝트 생성 (1~99: 아이템, 100~199: 몬스터, 200~299: 동전, 400~500:보스 500~:보스 스킬)
 void Control_Item(int index);
 void Control_Enemy(int index);
@@ -365,6 +366,13 @@ void MovementControl(int position[], float accel[], int size[], float *flyTime) 
 	//accel이 0이되면 아래 문장들은 실행이 안됌. 
 	if (accel[0] > 0) accel[0] -= 0.2; if (accel[0] < 0) accel[0] += 0.2;
 	if (accel[1] > 0) accel[1] -= 0.1; if (accel[1] < 0) accel[1] += 0.1;
+}
+
+bool EnemyPosition(int x, int size_x) {      //캐릭터의 중앙이  몬스터의 중앙보다 왼쪽이면 FALSE
+   if (character.position[0] + 1 < x + size_x / 2)
+      return FALSE;
+   else
+      return TRUE;
 }
 
 bool CheckCollision(int position1[], int position2[], int size1[], int size2[]) {	//충동 체크 함수 
