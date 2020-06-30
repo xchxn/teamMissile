@@ -82,6 +82,7 @@ void Control_Enemy(int index);
 void Control_Particle(int index);
 void Control_Object();   //모든 오브젝트 컨트롤 함수
 void Remove_Object(int index);      //object[index] 메모리 해제 후 NULL로 초기화 : 다른 오브젝트를 위한 크기 만들기 위함 
+void textcolor(int foreground, int background);   //텍스트컬러
 
 int main()
 {
@@ -651,4 +652,9 @@ void Control_Object() {   //모든 오브젝트 컨트롤 함수
 void Remove_Object(int index) {      //object[index] 메모리 해제 후 NULL로 초기화 : 다른 오브젝트를 위한 크기 만들기 위함 
    free(objects[index]);
     objects[index] = 0;
+}
+
+void textcolor(int foreground, int background) { 
+   int color=foreground+background*16; 
+   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color); 
 }
