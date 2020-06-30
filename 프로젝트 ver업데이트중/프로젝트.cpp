@@ -80,6 +80,7 @@ void Control_Item(int index);
 void Control_Enemy(int index);
 void Control_Particle(int index);
 void Control_Object();   //모든 오브젝트 컨트롤 함수
+void Remove_Object(int index);      //object[index] 메모리 해제 후 NULL로 초기화 : 다른 오브젝트를 위한 크기 만들기 위함 
 
 int main()
 {
@@ -637,4 +638,9 @@ void Control_Object() {   //모든 오브젝트 컨트롤 함수
             Control_Enemy(i);      //나머지는 적(슬라임,보스,보스스킬오브젝트)
       }
    }
+}
+
+void Remove_Object(int index) {      //object[index] 메모리 해제 후 NULL로 초기화 : 다른 오브젝트를 위한 크기 만들기 위함 
+   free(objects[index]);
+    objects[index] = 0;
 }
