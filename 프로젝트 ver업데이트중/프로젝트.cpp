@@ -75,7 +75,9 @@ void Control_UI();  //기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
 void Control_Character();	//기능 : 캐릭터의 움직임,스킬,피격 등 구현  
 bool CheckCollision(int position1[], int position2[], int size1[], int size2[]);	//충돌 체크 함수 : position1[]의 size1[]크기가 position2[]의 size2[]크기와 충돌이 나면 TRUE  
 void MovementControl(int position[], float accel[], int size[], float *flyTime);	//가속도 함수 
-
+void Control_Item(int index);
+void Control_Enemy(int index);
+void Control_Particle(int index);
 int main()
 {
 	printf("f"); 
