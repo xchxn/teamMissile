@@ -42,8 +42,10 @@ Object **objects;
 
 int tick = 0;							//tick 
 int spon_tick = 0;						//몬스터 리젠용 tick 
-int boss_tick = 0;						//보스 한번만 소환되게 할 tick 
+int boss_tick1 = 0;						//거미보스 한번만 소환되게 할 tick 
 int boss_tick2 = 0; 					//아수라보스 tick 
+int boss_skill_tick1 = 0;				//거미보스 스킬 tick 
+int boss_skill_tick2 = 0;				//아수라보스 스킬 tick
 char figure_floor[MAP_X_MAX];			//땅모양 배열 
 char mapData[MAP_X_MAX * MAP_Y_MAX];	//콘솔창 크기의 배열 
 
@@ -146,23 +148,33 @@ void UpdateGame() {
    Control_Object();   //mapData에 적,동전,아이템 등 업데이트
    Control_UI();      //땅배열 및 상태창 업데이트  
    
-   if (spon_tick + 5000 < tick) {      //15초마다 몬스터 스폰 
+   if (spon_tick + 5000 < tick) {      //5초마다 몬스터 스폰 
       spon_tick = tick;
-      Create_Object(rand() % 90, 5, 100);      //(x: 0~90 , y:5) kind = 100 : 몬스터    
+      Create_Object(rand() % 90, 5, 100);      //(x: 0~90 , y:5) kind = 100 : 슬라임    
       Create_Object(rand() % 90, 5, 100);
       Create_Object(rand() % 90, 5, 100);
    }
    
-   if(character.score >= 1800 && character.score <= 2400 && boss_tick < tick)      //스코어 1800이상 되면 첫번쨰 보스 출현 kind 400 
+   if(character.score >= 1800 && character.score <= 2400 && boss_tick1 < tick)      //스코어 1800이상 되면 첫번쨰 보스 출현 kind 400 
    {
       Create_Object(MAP_X_MAX-22 ,9,400);
-      boss_tick += 100000000;
+      boss_tick1 += 100000000;
    }
    
    if(character.score >= 6500 && character.score <= 8000 && boss_tick2 < tick)      //스코어 6500이상 되면 두번쨰 보스 출현 kind 401 
    {
       Create_Object(MAP_X_MAX-31 ,3,401);
       boss_tick2 += 100000000;
+   }
+   
+   if(boss_skill_tick2 +5000 < tick && character.score >= 6500)
+   {
+		boss_skill_tick2 = tick;
+		Create_Object(rand() % 30+55, 1, 501);
+	    Create_Object(rand() % 30+10, 3, 501);
+	    Create_Object(rand() % 30+25, 5, 501);
+	    Create_Object(rand() % 10, 7, 501);
+	    Create_Object(rand() % 30+40, 7, 501);
    }
    
    printf("%s",mapData);   //draw mapData
@@ -523,8 +535,8 @@ void Create_Object(int x, int y, int kind) {      //x,y좌표에 kind값에 따라 오브
       	obj->hp[0] = 1;      
       	obj->hp[1] = obj->hp[0];
       	obj->exp = 0; 
-       	obj->size[0] = 30;
-      	obj->size[1] = 30;
+       	obj->size[0] = 14;
+      	obj->size[1] = 15;
    }
 }
 
@@ -562,23 +574,24 @@ void Control_Enemy(int index) {
    int skill2_size[2]   = {106,3}; 
    
    int item_code = rand() % 100;
-
-   if (objects[index]->hp[1] < 1) {   //몬스터가 죽으면 
-      for (int i = 0; i < 3; i++)      //동전 3개 떨어짐 
-         Create_Object(x + objects[index]->size[0] / 2, y + objects[index]->size[1] / 2, 200); 
-         
-      //item_code가 90이상이거나 3이하이면 아이템 떨구게함   
-      if (item_code >= 90)
-         Create_Object(x + objects[index]->size[0] / 2 - 2, y, 1);   //1번무기 
-      if (item_code <= 3)
-         Create_Object(x + objects[index]->size[0] / 2 - 2, y, 2);   //2번무기  
-      
-      
-      character.exp[1] += objects[index]->exp;
-      
-      Remove_Object(index);
-      return;
-      }
+   	 //몬스터가 죽으면 
+	if (objects[index]->hp[1] < 1) {
+	    if(objects[index]->kind<500)	//보스 스킬을 죽일 때 동전떨어지는걸 막기위해서 
+			for (int i = 0; i < 3; i++)      //동전 3개 떨어짐 
+		   		Create_Object(x + objects[index]->size[0] / 2, y + objects[index]->size[1] / 2, 200); 
+		         
+	      //item_code가 90이상이거나 3이하이면 아이템 떨구게함   
+		if (item_code >= 90)
+	       Create_Object(x + objects[index]->size[0] / 2 - 2, y, 1);   //1번무기 
+	    if (item_code <= 3)
+	       Create_Object(x + objects[index]->size[0] / 2 - 2, y, 2);   //2번무기  
+	      
+	      
+	    character.exp[1] += objects[index]->exp;
+	      
+	    Remove_Object(index);
+	    return;
+	}
    
    if (objects[index]->tick[0] + 2000 > tick) //몬스터가 공격받은 후 2초동안  
       Draw_Number(x + objects[index]->size[0] / 2 - NumLen(objects[index]->hp[1]) / 2, y - 1, objects[index]->hp[1]);   //몬스터 머리위에 hp뜨게함 
