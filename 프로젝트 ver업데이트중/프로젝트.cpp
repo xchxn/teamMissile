@@ -46,26 +46,29 @@ int boss_tick1 = 0;						//거미보스 한번만 소환되게 할 tick
 int boss_tick2 = 0; 					//아수라보스 tick 
 int boss_skill_tick1 = 0;				//거미보스 스킬 tick 
 int boss_skill_tick2 = 0;				//아수라보스 스킬 tick
+int clear_boss = 0;
 char figure_floor[MAP_X_MAX];			//땅모양 배열 
 char mapData[MAP_X_MAX * MAP_Y_MAX];	//콘솔창 크기의 배열 
 
 //캐릭터 모양 배열 (3*3) 
-const char figure_character[10] = " 0  | a^a";
+char figure_character[10] = " 0  | a^a";
 
 //들고있는 무기 모양 
-const char figure_weapon[2][3][4] = 
-{{"---", "--+", "<=+"},
- {"---", "+--", "+=>"}};
+char figure_weapon[2][2][4] = 
+{{"---", "<=+"},
+ {"---", "+=>"}};
 
 //상태창 박스의 무기모양 
-const char figure_invenWeapon[3][11] = {"   /   /  ", "   /  '*. ", "  |   \"+\" "};  
+const char figure_invenWeapon[2][11] = {"   /   /  ","  |   \"+\" "};  
 
 //몬스터 모양 
-const char figure_enemy1[2][13] = {" __ (**)----", " __ [  ]\'--\'"};
+char figure_enemy1[2][13] = {" __ (**)----", " __ [  ]\'--\'"};
 //보스 거미 모양 
 char figure_spider[] ="|                | |      ##      |  --    {  }    --    |  {    }  |      |-{  --  }-|        { ---- }     |  --{ ---- }--  | -/  {  --  }  \\-     / {    } \\       / { 0000 } \\     -   { 00 }   -   |  /{      }\\  | |  |  \\()()/  |  ||  |   ||||   |  || /    \\/\\/    \\ || |            | |  |            |    |            |  ";
 //보스 아수라 모양 
 char figure_asura[] ={"   ^    |   ------   |    ^     / |    | |  || =| |    | |    |#|    || ==||=  ||    |#|    |#|    ||=()||() ||    |#|    |#|     |   ||   |     |#|    |#|    | |  || =| |    |#|    |#|   |  | ==== |  |   |#|    |#|   |  |= ||  |  |   |#|    |#|     | |    | |     |#|  ------   |   ----   |   ------ |==|    | | |||| | |    |==|  |==----| |  ||||  | |----==|  |=    | |  -=||=-  | |    =|  |----| ---|==||==|--- |----|   ====|    |==||==|    |====    ^   |    |==||==|    |   ^   /|    |---|--||--|---|    |)  ||   |    |------|    |   ||  ||  |    |        |    |  ||  || |   ||          ||   | ||  || |  | |          | |  | || ----  |  |   ----   |  |  ----|==|  | --  |    |  -- |   ==||==  | |    |    |    | |  ==||=  |  |   |      |   |  |  =| ===  |    |      |    |  ===       |   |        |   |            |   |        |   |            |   |        |   |            -----        -----      "};
+//거미 보스 스킬 새끼거미 생성 
+char figure_spider_skill[] = {" *** *   **   **   * *** "};
 //아수라 스킬 검 떨어지기 
 char figure_sword[] ={"   =       =     #####  -------  |   |   | # |   | # |   | # |   | # |   | # |   | # |   | # |    | |      |    "};
 
@@ -105,7 +108,7 @@ int main()
          if (tick == 0)               //character의 hp[1]이 1미만이 되면 tick = 0 
             break;
         
-        if (character.lv > 500)			//아수라 보스 잡으면 lv500 이상 되게해서 엔딩 
+        if (clear_boss == 2)			//아수라 보스 잡으면 엔딩 
         	break;
       }
    }
@@ -147,26 +150,37 @@ void UpdateGame() {
    Control_Object();   //mapData에 적,동전,아이템 등 업데이트
    Control_UI();      //땅배열 및 상태창 업데이트  
    
-   if (spon_tick + 5000 < tick) {      //5초마다 몬스터 스폰 
+   if (spon_tick + 5000 < tick && ((clear_boss == 0 && character.score <1800) || (clear_boss == 1 && character.score < 6500))) {      //5초마다 몬스터 스폰 및 보스있을때는 안나오게 
       spon_tick = tick;
       Create_Object(rand() % 90, 5, 100);      //(x: 0~90 , y:5) kind = 100 : 슬라임    
       Create_Object(rand() % 90, 5, 100);
       Create_Object(rand() % 90, 5, 100);
    }
    
-   if(character.score >= 1800 && character.score <= 2400 && boss_tick1 < tick)      //스코어 1800이상 되면 첫번쨰 보스 출현 kind 400 
+   if(character.score >= 1800 && character.score <= 3000 && boss_tick1 < tick)      //스코어 1800이상 되면 첫번쨰 보스 출현 kind 400 
    {
       Create_Object(MAP_X_MAX-22 ,9,400);
       boss_tick1 += 100000000;
    }
    
-   if(character.score >= 6500 && character.score <= 8000 && boss_tick2 < tick)      //스코어 6500이상 되면 두번쨰 보스 출현 kind 401 
+   if(character.score >= 6500 && character.score <= 8000 && boss_tick2 < tick && clear_boss == 1)      //스코어 6500이상 되면 두번쨰 보스 출현 kind 401 
    {
       Create_Object(MAP_X_MAX-31 ,3,401);
       boss_tick2 += 100000000;
    }
    
-   if(boss_skill_tick2 +5000 < tick && character.score >= 6500)
+   
+   if(boss_skill_tick1 +5000 < tick && character.score >= 1800 && clear_boss == 0)
+   {
+		boss_skill_tick1 = tick;
+		Create_Object(rand() % 90, 5, 500);
+		Create_Object(rand() % 90, 5, 500); 
+		Create_Object(rand() % 90, 5, 500); 
+		Create_Object(rand() % 90, 5, 500); 
+		Create_Object(rand() % 90, 5, 500);  
+   }
+   
+   if(boss_skill_tick2 +5000 < tick && character.score >= 6500 && clear_boss == 1)
    {
 		boss_skill_tick2 = tick;
 		Create_Object(rand() % 30+55, 1, 501);
@@ -253,7 +267,7 @@ void Control_UI() 	//기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
 	Draw_Figure(1, FLOOR_Y, MAP_X_MAX, 1, figure_floor);	//draw floor
 	
 	Draw_Box(1, 2, 35, 8); Draw_Box(27, 5, 7, 4);	//draw weaponinven
-	Draw_Figure(28, 6, 5, 2, figure_invenWeapon[character.weapon]);		//character.weapon이 0,1,2로 각자 무기 모양 배열 나타냄 
+	Draw_Figure(28, 6, 5, 2, figure_invenWeapon[character.weapon]);		//character.weapon이 0,1로 각자 무기 모양 배열 나타냄 
 	Draw_Figure(28, 4, 6, 1, "Weapon");
 	
 	Edit_Map(3, 3, '\"');	//draw name, lv, exp
@@ -513,7 +527,7 @@ void Create_Object(int x, int y, int kind) {      //x,y좌표에 kind값에 따라 오브
    {
       	obj->hp[0] = 1000;      
       	obj->hp[1] = obj->hp[0];
-      	obj->exp = 100000; 
+      	obj->exp = 300; 
        	obj->size[0] = 30;
       	obj->size[1] = 30;
    }
@@ -521,11 +535,14 @@ void Create_Object(int x, int y, int kind) {      //x,y좌표에 kind값에 따라 오브
    //거미 보스 스킬 
    if(kind == 500) 
    {
-      	obj->hp[0] = 1;      
-      	obj->hp[1] = obj->hp[0];
-      	obj->exp = 0; 
-       	obj->size[0] = 30;
-      	obj->size[1] = 30;
+      	obj->hp[0] = 75;      //몬스터를 일단 kind100을 슬라임으로 해놨음 
+        obj->hp[1] = obj->hp[0];
+       obj->exp = 0;
+       obj->size[0] = 5;
+        obj->size[1] = 5;
+       obj->tick[1] = 0;
+       obj->tick[2] = 1000;
+       obj->tick[3] = 0;
    }
    
     //아수라 보스 스킬 
@@ -575,17 +592,20 @@ void Control_Enemy(int index) {
    int item_code = rand() % 100;
    	 //몬스터가 죽으면 
 	if (objects[index]->hp[1] < 1) {
-	    if(objects[index]->kind==100)	//보스 스킬을 죽일 때 동전떨어지는걸 막기위해서 슬라임일때만 동전나오게 
-			for (int i = 0; i < 3; i++)      //동전 3개 떨어짐 
+	    if(objects[index]->kind == 100)	//슬라임 죽이면 동전 3개 떨어짐 
+			for (int i = 0; i < 3; i++)  
 		   		Create_Object(x + objects[index]->size[0] / 2, y + objects[index]->size[1] / 2, 200); 
-		         
-	      //item_code가 90이상이거나 3이하이면 아이템 떨구게함   
-		if (item_code >= 90)
-	       Create_Object(x + objects[index]->size[0] / 2 - 2, y, 1);   //1번무기 
-	    if (item_code <= 3)
-	       Create_Object(x + objects[index]->size[0] / 2 - 2, y, 2);   //2번무기  
-	      
-	      
+		
+		//거미 보스가 죽으면
+		if(objects[index]->kind == 400)
+		{
+			clear_boss = 1; 
+			Create_Object(x + objects[index]->size[0] / 2 - 2, y, 1);   //1번무기 떨굼 
+		}
+		//아수라 보스가 죽으면 
+		if(objects[index]->kind == 401)
+			clear_boss = 2; 
+			
 	    character.exp[1] += objects[index]->exp;
 	      
 	    Remove_Object(index);
@@ -708,7 +728,20 @@ void Control_Enemy(int index) {
          character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
          character.hp[1] -= 15;
       }
-    Draw_Figure(x, y, objects[index]->size[0], objects[index]->size[1], figure_sword);
+      //새끼거미 움직임 구현 
+      if (objects[index]->tick[1] + objects[index]->tick[2] < tick) {
+         objects[index]->tick[1] = tick;
+         objects[index]->tick[2] = 1000 + rand()%2000;   //if문이 1초+(0~2초)에 한번씩 실행. 따라서 각 슬라임이 0~3초에 한번씩 움직임 
+         
+         //새끼거미 y가속도 설정(점프) 
+         objects[index]->accel[1] = - 0.75;
+         //새끼거미 x가속도 설정(x축 이동) 
+         if (Enemy_Position(x,  objects[index]->size[0]))
+            objects[index]->accel[0] = 1.5;
+         else
+            objects[index]->accel[0] = -1.5;
+      }
+    Draw_Figure(x, y, objects[index]->size[0], objects[index]->size[1], figure_spider_skill);
     Movement_Control(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime); //중력 
    } 
    
@@ -718,7 +751,7 @@ void Control_Enemy(int index) {
       //스킬과 캐릭터 충돌시 
       if (character.tick[3] == 0 && Check_Collision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
          character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
-         character.hp[1] -= 15;
+         character.hp[1] -= 20;
       }
     Draw_Figure(x, y, objects[index]->size[0], objects[index]->size[1], figure_sword);
     Movement_Control(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime); //중력 
