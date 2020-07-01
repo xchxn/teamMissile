@@ -74,16 +74,16 @@ void SetConsole();	//콘솔창 세팅
 void UpdateGame();   //게임판인 mapData 업데이트 후 출력(전체적인 게임 진행 상황 업데이트) 
 void ExitGame();   //objects 동적메모리 헤제  
 void Draw_Figure(int x, int y, int size_x, int size_y, const char spr[]);	//(x,y)를 기준으로 size_x*size_y크기로 spr[]을 그림 
-void FillMap(char str[], char ch, int max);	//str배열을 문자 str_s로 max_value만큼 채움 
-void EditMap(int x, int y, char ch);	//(x,y)를 문자str로 변경 
+void Fill_Map(char str[], char ch, int max);	//str배열을 문자 str_s로 max_value만큼 채움 
+void Edit_Map(int x, int y, char ch);	//(x,y)를 문자str로 변경 
 void Draw_Box(int x, int y, int size_x, int size_y);	//상태창에 상자 그리는 함수 (x,y)에 size_x*size_y크기의 상자 그림
 void Draw_Number(int x, int y, int num);	//(x,y)에  char형으로 변환된 숫자를 그림
 int NumLen(int num);	//num의 자릿수를 리턴하는 함수 (Draw_Number할때 필요)
 void Control_UI();  //기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
 void Control_Character();	//기능 : 캐릭터의 움직임,스킬,피격 등 구현  
-bool CheckCollision(int position1[], int position2[], int size1[], int size2[]);	//충돌 체크 함수 : position1[]의 size1[]크기가 position2[]의 size2[]크기와 충돌이 나면 TRUE  
-void MovementControl(int position[], float accel[], int size[], float *flyTime);	//가속도 함수 
-bool EnemyPosition(int x, int size_x);   //캐릭터의 위치와 몬스터의 위치를 비교.  캐릭터가 왼쪽에 있으면 FALSE, 오른쪽에 있으면 TRUE 
+bool Check_Collision(int position1[], int position2[], int size1[], int size2[]);	//충돌 체크 함수 : position1[]의 size1[]크기가 position2[]의 size2[]크기와 충돌이 나면 TRUE  
+void Movement_Control(int position[], float accel[], int size[], float *flyTime);	//가속도 함수 
+bool Enemy_Position(int x, int size_x);   //캐릭터의 위치와 몬스터의 위치를 비교.  캐릭터가 왼쪽에 있으면 FALSE, 오른쪽에 있으면 TRUE 
 void Create_Object(int x, int y, int kind);      //x,y좌표에 kind값에 따라 오브젝트 생성 (1~99: 아이템, 100~199: 몬스터, 200~299: 동전, 400~500:보스 500~:보스 스킬)
 void Control_Item(int index);
 void Control_Enemy(int index);
@@ -121,7 +121,7 @@ void StartGame() {
 	printf("이름을 입력하세요 : ");
 	scanf("%s", character.name);
 	
-	FillMap(figure_floor, '=', MAP_X_MAX);	//땅배열에 '=' 채우기 
+	Fill_Map(figure_floor, '=', MAP_X_MAX);	//땅배열에 '=' 채우기 
 	
 	objects = (Object **)malloc(sizeof(Object *) * OBJECT_MAX);		//OBJECT_MAX개의 object포인터 공간 할당  
 	memset(objects, 0, sizeof(Object *) * OBJECT_MAX); 				//objects가 가리키는 놈을 sizeof(object*)*OBJECT_MAX 크기만큼 0으로 초기화 
@@ -141,7 +141,7 @@ void SetConsole() {
 }
 
 void UpdateGame() {
-   FillMap(mapData, ' ', MAP_X_MAX * MAP_Y_MAX);   //맵을 공백으로 초기화 
+   Fill_Map(mapData, ' ', MAP_X_MAX * MAP_Y_MAX);   //맵을 공백으로 초기화 
    
    Control_Character();   //mapData에 캐릭터 정보 업데이트 
    Control_Object();   //mapData에 적,동전,아이템 등 업데이트
@@ -191,29 +191,29 @@ void ExitGame() {   //objects 동적메모리 헤제
 void Draw_Figure(int x, int y, int size_x, int size_y, const char spr[]) {	//(x,y)를 기준으로 size_x*size_y크기로 spr[]을 그림 
 	for (int i = 0; i < size_y; i++) {
 		for (int n = 0; n < size_x; n++)
-			EditMap(x + n, y + i, spr[i * size_x + n]);
+			Edit_Map(x + n, y + i, spr[i * size_x + n]);
 	}
 }
 
-void FillMap(char str[], char ch, int max) {	//str배열을 문자 ch로 max만큼 채움 
+void Fill_Map(char str[], char ch, int max) {	//str배열을 문자 ch로 max만큼 채움 
 	for (int i = 0; i < max; i++)
 		str[i] = ch;
 }
 
-void EditMap(int x, int y, char ch) {	//(x,y)를 문자ch로 변경 
+void Edit_Map(int x, int y, char ch) {	//(x,y)를 문자ch로 변경 
 	if (x > 0 && y > 0 && x - 1 < MAP_X_MAX && y - 1 < MAP_Y_MAX)
 		mapData[(y - 1) * MAP_X_MAX + x - 1] = ch;
 }
 
 void Draw_Box(int x, int y, int size_x, int size_y) {		//상태창에 상자 그리는 함수 (x,y)에 size_x*size_y크기의 상자 그림 
-	EditMap(x, y, '.'); EditMap(x + size_x - 1, y, '.');
-	EditMap(x, y + size_y - 1, '\''); EditMap(x + size_x - 1, y + size_y - 1, '\'');
+	Edit_Map(x, y, '.'); Edit_Map(x + size_x - 1, y, '.');
+	Edit_Map(x, y + size_y - 1, '\''); Edit_Map(x + size_x - 1, y + size_y - 1, '\'');
 	
 	for (int i = 1; i < size_x - 1; i++) {
-		EditMap(x + i, y, '-'); EditMap(x + i, y + size_y - 1, '-');
+		Edit_Map(x + i, y, '-'); Edit_Map(x + i, y + size_y - 1, '-');
 	}
 	for (int i = 1; i < size_y - 1; i++) {
-		EditMap(x, y + i, '|'); EditMap(x + size_x - 1, y + i, '|');
+		Edit_Map(x, y + i, '|'); Edit_Map(x + size_x - 1, y + i, '|');
 	}
 }
 
@@ -256,14 +256,14 @@ void Control_UI() 	//기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
 	Draw_Figure(28, 6, 5, 2, figure_invenWeapon[character.weapon]);		//character.weapon이 0,1,2로 각자 무기 모양 배열 나타냄 
 	Draw_Figure(28, 4, 6, 1, "Weapon");
 	
-	EditMap(3, 3, '\"');	//draw name, lv, exp
+	Edit_Map(3, 3, '\"');	//draw name, lv, exp
 	Draw_Figure(4, 3, strlen(character.name), 1, character.name);	len = 4 + strlen(character.name);//len이 x좌표를 나타냄. 각 문자열 길이만큼 len++시키면서 문자열을 알맞은 위치에 출력 
 	Draw_Figure(len, 3, 7, 1, "\" LV.");	len += 5;
 	Draw_Number(len, 3, character.lv);	len += NumLen(character.lv);
 	Draw_Figure(len, 3, 2, 1, " (");	len += 2;
 	
 	if (!expPer) {	//경험치 0%면 
-		EditMap(len, 3, '0');	len ++;		 
+		Edit_Map(len, 3, '0');	len ++;		 
 	} else {
 		Draw_Number(len, 3, expPer);	len += NumLen(expPer);
 	}
@@ -274,12 +274,12 @@ void Control_UI() 	//기능 : 땅그리기, 왼쪽상단 상태창 그리기 및 갱신
 	
 	Draw_Figure(4, 5, 3, 1, "HP:");	//draw HP
 	Draw_Number(8, 5, character.hp[1]);
-	EditMap(9 + NumLen(character.hp[1]), 5, '/');
+	Edit_Map(9 + NumLen(character.hp[1]), 5, '/');
 	Draw_Number(11 + NumLen(character.hp[1]), 5, character.hp[0]);
 	
 	Draw_Figure(4, 6, 3, 1, "MP:");	//draw MP
 	Draw_Number(8, 6, character.mp[1]);
-	EditMap(9 + NumLen(character.mp[1]), 6, '/');
+	Edit_Map(9 + NumLen(character.mp[1]), 6, '/');
 	Draw_Number(11 + NumLen(character.mp[1]), 6, character.mp[0]);
 	
 	Draw_Figure(4, 8, 6, 1, "Power:");	//draw power
@@ -363,7 +363,7 @@ void Control_Character()
 	if (GetAsyncKeyState(VK_UP) && character.position[1] + 3 == FLOOR_Y)	//jump
 			character.accel[1] = -1.75;
 	
-	MovementControl(character.position, character.accel, character.size, &character.flyTime);	// control character movement  중력구현 
+	Movement_Control(character.position, character.accel, character.size, &character.flyTime);	// control character movement  중력구현 
 	
 	//캐릭터 그리는 부분 
 	if (character.tick[3] % 2 == 0) {		//무적tick이 짝수면 (무적tick이 100에서 1씩 계속 줄어듬. 따라서 캐릭터가 깜빡이게 됌)
@@ -371,9 +371,9 @@ void Control_Character()
 		
 		
 		if (character.direction) {//오른쪽방향이면 몸통 오른쪽으로 
-			EditMap(character.position[0], character.position[1] + 1, '(');
+			Edit_Map(character.position[0], character.position[1] + 1, '(');
 		} else {				  //왼쪽방향이면  몸통 왼쪽으로 
-			EditMap(character.position[0] + 2, character.position[1] + 1, ')');
+			Edit_Map(character.position[0] + 2, character.position[1] + 1, ')');
 		}
 		
 		if (character.accel[0] > 1)  //x키가 눌리고(dash) 오른쪽 방향을 보고있는 경우- 캐릭터 왼쪽에 샤샤샥효과   
@@ -383,11 +383,11 @@ void Control_Character()
 		
 		//공격모션 그리기 부분  
 		if (character.attack==TRUE ) {
-					EditMap(character.position[0] - 2 + 6 * character.direction, character.position[1] + 1, 'o');
+					Edit_Map(character.position[0] - 2 + 6 * character.direction, character.position[1] + 1, 'o');
 					Draw_Figure(character.position[0] - 5 + 10 * character.direction, character.position[1] + 1, 3, 1, figure_weapon[character.direction][character.weapon]);
 				} 
 		else {
-					EditMap(character.position[0] + 2 * character.direction, character.position[1] + 1, 'o');
+					Edit_Map(character.position[0] + 2 * character.direction, character.position[1] + 1, 'o');
 					Draw_Figure(character.position[0] - 3 + 6 * character.direction, character.position[1] + 1, 3, 1, figure_weapon[character.direction][character.weapon]);
 				}
 		
@@ -420,7 +420,7 @@ void Control_Character()
 }
 
 
-void MovementControl(int position[], float accel[], int size[], float *flyTime) {
+void Movement_Control(int position[], float accel[], int size[], float *flyTime) {
 	float y_value = accel[1];
 	
 	if (position[1] + size[1] == FLOOR_Y) {
@@ -442,14 +442,14 @@ void MovementControl(int position[], float accel[], int size[], float *flyTime) 
 	if (accel[1] > 0) accel[1] -= 0.1; if (accel[1] < 0) accel[1] += 0.1;
 }
 
-bool EnemyPosition(int x, int size_x) {      //캐릭터의 중앙이  몬스터의 중앙보다 왼쪽이면 FALSE
+bool Enemy_Position(int x, int size_x) {      //캐릭터의 중앙이  몬스터의 중앙보다 왼쪽이면 FALSE
    if (character.position[0] + 1 < x + size_x / 2)
       return FALSE;
    else
       return TRUE;
 }
 
-bool CheckCollision(int position1[], int position2[], int size1[], int size2[]) {	//충동 체크 함수 
+bool Check_Collision(int position1[], int position2[], int size1[], int size2[]) {	//충동 체크 함수 
 	if (position1[0] > position2[0] - size1[0] && position1[0] < position2[0] + size2[0]	//position2[0]-size1[0] = 몬스터 시작지점-캐릭터 가로크기 , position2[0]+size2[0] = 몬스터의 우측 끝
 	    && position1[1] > position2[1] - size1[1] && position1[1] < position2[1] + size2[1])	//y값 충돌 
 		{
@@ -544,7 +544,7 @@ void Control_Item(int index) {
    int item_position[2] = {x, y - 2};
    int item_size[2] = {5, 2};
    
-   if (CheckCollision(item_position, character.position, item_size, character.size)) {      //아이템과 캐릭터가 충돌이 나면 
+   if (Check_Collision(item_position, character.position, item_size, character.size)) {      //아이템과 캐릭터가 충돌이 나면 
       Draw_Figure(x + 1, y - 5, 3, 1, "[E]");      //아이템 위에 [E] 표시  
       
       if (GetAsyncKeyState(0x45)) {      //E키가 눌리면 
@@ -558,7 +558,7 @@ void Control_Item(int index) {
    Draw_Figure(x, y - 2, 5, 2, figure_invenWeapon[objects[index]->kind]);
 
    
-   MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
+   Movement_Control(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
 }
 
 void Control_Enemy(int index) {
@@ -595,19 +595,19 @@ void Control_Enemy(int index) {
    if (objects[index]->tick[0] + 2000 > tick) //몬스터가 공격받은 후 2초동안  
       Draw_Number(x + objects[index]->size[0] / 2 - NumLen(objects[index]->hp[1]) / 2, y - 1, objects[index]->hp[1]);   //몬스터 머리위에 hp뜨게함 
    
-   if (character.attack == TRUE && CheckCollision(objects[index]->position, attack_position, objects[index]->size, attack_size)) {      //캐릭터가 공격중 && 몬스터위치와 캐릭터 공격범위가 충돌나면 
+   if (character.attack == TRUE && Check_Collision(objects[index]->position, attack_position, objects[index]->size, attack_size)) {      //캐릭터가 공격중 && 몬스터위치와 캐릭터 공격범위가 충돌나면 
       objects[index]->tick[0] = tick;      //몬스터 hp tick이 tick과 같아지므로 2초동안 머리위에 hp뜸 
       objects[index]->hp[1] -= character.power;
       objects[index]->accel[1] = - 0.55;      //y가속도 : 공중에 조금 뜸 
       
       //x 가속도 : 옆으로 조금 밀려남  
-      if (EnemyPosition(x,  objects[index]->size[0]))      //몬스터가 좌측에 위치시  
+      if (Enemy_Position(x,  objects[index]->size[0]))      //몬스터가 좌측에 위치시  
          objects[index]->accel[0] = -0.75;      
       else                                    //몬스터 우측에 위치시 
          objects[index]->accel[0] = 0.75;
    }
    //왼쪽 스킬1 공격 피격 판정 
-   if (character.skill_attack1 == TRUE && character.direction == FALSE && CheckCollision(objects[index]->position, skill1_left_position, objects[index]->size, skill1_left_size))
+   if (character.skill_attack1 == TRUE && character.direction == FALSE && Check_Collision(objects[index]->position, skill1_left_position, objects[index]->size, skill1_left_size))
    {
       objects[index]->tick[0] = tick;
       objects[index]->hp[1] -= 5;
@@ -617,7 +617,7 @@ void Control_Enemy(int index) {
       objects[index]->accel[0] = -0.75;
    }
    //오른쪽 스킬1 공격 피격 판정
-   if (character.skill_attack1 == TRUE && character.direction == TRUE && CheckCollision(objects[index]->position, skill1_right_position, objects[index]->size, skill1_right_size))
+   if (character.skill_attack1 == TRUE && character.direction == TRUE && Check_Collision(objects[index]->position, skill1_right_position, objects[index]->size, skill1_right_size))
    {
       objects[index]->tick[0] = tick;
       objects[index]->hp[1] -= 10;
@@ -626,7 +626,7 @@ void Control_Enemy(int index) {
       objects[index]->accel[0] = 0.75;
    }
    //강아지 스킬 공격 피격 판정 
-   if (character.skill_attack2 == TRUE && CheckCollision(objects[index]->position, skill2_position, objects[index]->size, skill2_size))
+   if (character.skill_attack2 == TRUE && Check_Collision(objects[index]->position, skill2_position, objects[index]->size, skill2_size))
    {
       objects[index]->tick[0] = tick;
       objects[index]->hp[1] -= 20;
@@ -652,26 +652,26 @@ void Control_Enemy(int index) {
          //슬라임 y가속도 설정(점프) 
          objects[index]->accel[1] = - 0.75;
          //슬라임 x가속도 설정(x축 이동) 
-         if (EnemyPosition(x,  objects[index]->size[0]))
+         if (Enemy_Position(x,  objects[index]->size[0]))
             objects[index]->accel[0] = 1.5;
          else
             objects[index]->accel[0] = -1.5;
       }
       
       //슬라임과 캐릭터 충돌 
-      if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
+      if (character.tick[3] == 0 && Check_Collision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
          character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
          character.hp[1] -= 10;
       }
       
       Draw_Figure(x, y, objects[index]->size[0], objects[index]->size[1], figure_enemy1[objects[index]->isJumping]);
-      MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
+      Movement_Control(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
    }
    
    //거미보스 : kind 400 
    if(objects[index] -> kind == 400)
    {
-      if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
+      if (character.tick[3] == 0 && Check_Collision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
          character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
          character.hp[1] -= 30;
       }
@@ -692,7 +692,7 @@ void Control_Enemy(int index) {
     if(objects[index] -> kind == 401)
    {
    	
-    if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
+    if (character.tick[3] == 0 && Check_Collision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
          character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
          character.hp[1] -= 50;
       	}
@@ -704,24 +704,24 @@ void Control_Enemy(int index) {
    if (objects[index]->kind == 500) {
       
       //스킬과 캐릭터 충돌시 
-      if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
+      if (character.tick[3] == 0 && Check_Collision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
          character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
          character.hp[1] -= 15;
       }
     Draw_Figure(x, y, objects[index]->size[0], objects[index]->size[1], figure_sword);
-    MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime); //중력 
+    Movement_Control(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime); //중력 
    } 
    
    //아수라 보스 스킬 
    if (objects[index]->kind == 501) {
       
       //스킬과 캐릭터 충돌시 
-      if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
+      if (character.tick[3] == 0 && Check_Collision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
          character.tick[3] = 100;   //캐릭터의 피격시 무적 tick = 100    (100에서 1씩 줄어듬. 0까지 다시 줄어들어야 다시 피격판정 가능)
          character.hp[1] -= 15;
       }
     Draw_Figure(x, y, objects[index]->size[0], objects[index]->size[1], figure_sword);
-    MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime); //중력 
+    Movement_Control(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime); //중력 
    } 
 }
 
@@ -740,17 +740,17 @@ void Control_Particle(int index) {
          objects[index]->accel[1] =  -3;         //동전이 위로 떳다가 떨어지도록 
       }
       
-      if (CheckCollision(money_position, character.position, money_size, character.size)) {
+      if (Check_Collision(money_position, character.position, money_size, character.size)) {
          character.score += 100; 
          
          Remove_Object(index);
          return;
       }
       
-      EditMap(x, y - 1, '@');
+      Edit_Map(x, y - 1, '@');
    }
    //동전 중력 
-   MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
+   Movement_Control(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
 }
 
 void Control_Object() {   //모든 오브젝트 컨트롤 함수 
