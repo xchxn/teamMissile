@@ -32,23 +32,23 @@ void PrintEnding2(int n,int x,int y)
 }
 int main()
 {	
-	PrintEnding(0,1,32);
-	PrintEnding(1,1,31);
-	PrintEnding(2,1,30);
-	PrintEnding(3,1,29);
-	PrintEnding(4,1,28);
-	PrintEnding(5,1,27);
-	PrintEnding(6,1,26);
-	PrintEnding(7,1,25);
-	PrintEnding(8,1,24);
-	PrintEnding(9,1,23);
-	PrintEnding2(0,1,22);
-	PrintEnding2(1,1,21);
-	PrintEnding2(2,1,20);
-	PrintEnding2(3,1,19);
-	PrintEnding2(4,1,18);
-	PrintEnding2(5,1,17);
-	PrintEnding2(6,1,16);
-	PrintEnding2(7,1,15);
-	PrintEnding2(8,1,14);
+	PrintEnding(0,1,19);
+	PrintEnding(1,1,18);
+	PrintEnding(2,1,17);
+	PrintEnding(3,1,16);
+	PrintEnding(4,1,15);
+	PrintEnding(5,1,14);
+	PrintEnding(6,1,13);
+	PrintEnding(7,1,12);
+	PrintEnding(8,1,11);
+	PrintEnding(9,1,10);
+	PrintEnding2(0,1,9);
+	PrintEnding2(1,1,8);
+	PrintEnding2(2,1,7);
+	PrintEnding2(3,1,6);
+	PrintEnding2(4,1,5);
+	PrintEnding2(5,1,4);
+	PrintEnding2(6,1,3);
+	PrintEnding2(7,1,2);
+	PrintEnding2(8,1,1);
 }
