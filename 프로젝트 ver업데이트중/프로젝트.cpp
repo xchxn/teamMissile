@@ -521,9 +521,9 @@ void Create_Object(int x, int y, int kind) {      //x,y좌표에 kind값에 따라 오브
    //거미 보스 스킬 
    if(kind == 500) 
    {
-      	obj->hp[0] = 1000;      
+      	obj->hp[0] = 1;      
       	obj->hp[1] = obj->hp[0];
-      	obj->exp = 100000; 
+      	obj->exp = 0; 
        	obj->size[0] = 30;
       	obj->size[1] = 30;
    }
@@ -575,7 +575,7 @@ void Control_Enemy(int index) {
    int item_code = rand() % 100;
    	 //몬스터가 죽으면 
 	if (objects[index]->hp[1] < 1) {
-	    if(objects[index]->kind<500)	//보스 스킬을 죽일 때 동전떨어지는걸 막기위해서 
+	    if(objects[index]->kind==100)	//보스 스킬을 죽일 때 동전떨어지는걸 막기위해서 슬라임일때만 동전나오게 
 			for (int i = 0; i < 3; i++)      //동전 3개 떨어짐 
 		   		Create_Object(x + objects[index]->size[0] / 2, y + objects[index]->size[1] / 2, 200); 
 		         
@@ -668,7 +668,7 @@ void Control_Enemy(int index) {
       MovementControl(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime);
    }
    
-   //거미보스 : kind 400    (여기에 스킬용 오브젝트 할당하면 될듯)
+   //거미보스 : kind 400 
    if(objects[index] -> kind == 400)
    {
       if (character.tick[3] == 0 && CheckCollision(objects[index]->position,character.position, objects[index]->size, character.size)) { //캐릭터의 피격시 무적 tick ==0 이고 몬스터와 충돌이 나면 
