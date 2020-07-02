@@ -3,6 +3,7 @@
 #include <memory.h>	//memset
 #include <time.h>
 #include <windows.h>
+#include <conio.h>
 #define FALSE 0
 #define TRUE 1
 #define MAP_X_MAX 116
@@ -71,6 +72,15 @@ char figure_asura[] ={"   ^    |   ------   |    ^     / |    | |  || =| |    | 
 char figure_spider_skill[] = {" *** *   **   **   * *** "};
 //¾Æ¼ö¶ó ½ºÅ³ °Ë ¶³¾îÁö±â 
 char figure_sword[] ={"   =       =     #####  -------  |   |   | # |   | # |   | # |   | # |   | # |   | # |   | # |    | |      |    "};
+//ÀÎÆ®·Î
+char Main_1[111]={"   ¡á¡á¡á¡á¡á¡á¡á¡á            ¡á                ¡á¡á      ¡á           ¡á¡á¡á¡á¡á¡á¡á         ¡á¡á        ¡á\n"};
+char Main_2[111]={"                 ¡á          ¡á  ¡á            ¡á    ¡á    ¡á           ¡á          ¡á     ¡á¡á¡á¡á¡á¡á    ¡á\n"};
+char Main_3[111]={"                 ¡á        ¡á      ¡á        ¡á        ¡á  ¡á           ¡á          ¡á       ¡á    ¡á      ¡á\n"};
+char Main_4[111]={"                 ¡á      ¡á          ¡á      ¡á        ¡á  ¡á           ¡á          ¡á       ¡á    ¡á  ¡á¡á¡á\n"};
+char Main_5[111]={"       ¡á    ¡á                                ¡á    ¡á    ¡á           ¡á¡á¡á¡á¡á¡á¡á         ¡á¡á        ¡á\n"};
+char Main_6[111]={"       ¡á    ¡á        ¡á¡á¡á¡á¡á¡á¡á¡á¡á        ¡á¡á      ¡á                 ¡á                   ¡á¡á¡á¡á¡á\n"};
+char Main_7[111]={"       ¡á    ¡á                ¡á                          ¡á                 ¡á                   ¡á      ¡á\n"};
+char Main_8[111]={" ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á          ¡á          ¡á¡á¡á¡á¡á¡á¡á¡á¡á         ¡á¡á¡á¡á¡á¡á¡á¡á¡á           ¡á¡á¡á¡á¡á\n"}; 
 //¿£µù Å©·¹µ÷ 
 char End[9][30]={"Team Missile","ÀüºÏ´ëÇÐ±³","ITÁ¤º¸°øÇÐ°ú","Ã¢ÀÇÀûIT°øÇÐ¼³°èÀÔ¹®","201515300 Àå¿ì¼®","201912388 ¿ÀÁØÇõ","201912430 Á¶¹Î¼­","201918800 Á¤¼®Âù","Thank you"};
 
@@ -96,6 +106,11 @@ void Control_Particle(int index);
 void Control_Object();   //¸ðµç ¿ÀºêÁ§Æ® ÄÁÆ®·Ñ ÇÔ¼ö
 void Remove_Object(int index);      //object[index] ¸Þ¸ð¸® ÇØÁ¦ ÈÄ NULL·Î ÃÊ±âÈ­ : ´Ù¸¥ ¿ÀºêÁ§Æ®¸¦ À§ÇÑ Å©±â ¸¸µé±â À§ÇÔ 
 void textcolor(int foreground, int background);   //ÅØ½ºÆ®ÄÃ·¯
+//ÀÎÆ®·Î 
+void PrintLogo();
+void Loading();
+void LoadEnd();
+void Intro();
 //¿£µù Å©·¹µ÷ 
 void Goto(int x,int y);
 void PrintEnding(int n,int x,int y);
@@ -103,7 +118,8 @@ void PrintEnding2(int n,int x,int y);
 void EndingCredit();
 
 int main()
-{
+{	
+	Intro();
 	StartGame();
    while (TRUE) {
       if (tick +30 < GetTickCount()) {   //30ms¿¡ ÇÑ¹ø¾¿ updategameµÇµµ·Ï ¼³Á¤   
@@ -320,7 +336,7 @@ void Control_Character()
 		character.lv += character.exp[1] / character.exp[0];	//º¸½º ÀâÀ»½Ã lv¾÷ ¸¹ÀÌ µÇµµ·Ï º¯°æ 
 		character.hp[0] = 100 + character.lv * 5 ; character.mp[0] = 100 + character.lv * 3; 
 		character.exp[1] = 0; character.exp[0] += character.lv * 10;
-		character.power = 10+(character.lv * 2);
+		character.power = 10+(character.lv);
 	}
 	//hp,mp gen & control			0.9ÃÊ¸¶´Ù ÇÇÈ¸º¹  
 	if (character.tick[0] + 900 < tick) { 
@@ -817,6 +833,67 @@ void Remove_Object(int index) {      //object[index] ¸Þ¸ð¸® ÇØÁ¦ ÈÄ NULL·Î ÃÊ±âÈ
 void textcolor(int foreground, int background) { 
    int color=foreground+background*16; 
    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color); 
+}
+//ÀÎÆ®·ÎÈ­¸é ÇÔ¼öµé 
+void PrintLogo()
+{
+	printf("\n\n\n ");
+		
+	for(int i=0;i<111;i++){ 
+		printf("%c",Main_1[i]);
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		printf("%c",Main_2[i]);
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		printf("%c",Main_3[i]);
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		printf("%c",Main_4[i]);
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		printf("%c",Main_5[i]);
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		printf("%c",Main_6[i]);
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		printf("%c",Main_7[i]);
+		Sleep(5);
+	}
+	for(int i=0;i<111;i++){
+		printf("%c",Main_8[i]);
+		Sleep(5);
+	}
+}
+void Loading()
+{
+	for(int i=0;i<=100;i=i+3){
+		Goto(MAP_X_MAX/2-10,24);
+		printf("Loading...%d %%",i);
+		Sleep(75);
+	}
+}
+void LoadEnd()
+{
+	Goto(MAP_X_MAX/2-8,24);
+	printf("Loading complete");
+	Goto(MAP_X_MAX/2-15,25);
+	printf("Press any key to start game");
+	_getch();
+}
+void Intro()
+{	
+	system("mode con:cols=116 lines=36");
+	PrintLogo();
+	Loading();
+	LoadEnd();
 }
 //¿£µùÅ©·¹µ÷¿ë ÇÔ¼öµé 
 void Goto(int x,int y)
