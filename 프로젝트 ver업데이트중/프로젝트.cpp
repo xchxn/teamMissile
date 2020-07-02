@@ -69,7 +69,7 @@ char figure_spider[] ="|                | |      ##      |  --    {  }    --    
 //보스 아수라 모양 
 char figure_asura[] ={"   ^    |   ------   |    ^     / |    | |  || =| |    | |    |#|    || ==||=  ||    |#|    |#|    ||=()||() ||    |#|    |#|     |   ||   |     |#|    |#|    | |  || =| |    |#|    |#|   |  | ==== |  |   |#|    |#|   |  |= ||  |  |   |#|    |#|     | |    | |     |#|  ------   |   ----   |   ------ |==|    | | |||| | |    |==|  |==----| |  ||||  | |----==|  |=    | |  -=||=-  | |    =|  |----| ---|==||==|--- |----|   ====|    |==||==|    |====    ^   |    |==||==|    |   ^   /|    |---|--||--|---|    |)  ||   |    |------|    |   ||  ||  |    |        |    |  ||  || |   ||          ||   | ||  || |  | |          | |  | || ----  |  |   ----   |  |  ----|==|  | --  |    |  -- |   ==||==  | |    |    |    | |  ==||=  |  |   |      |   |  |  =| ===  |    |      |    |  ===       |   |        |   |            |   |        |   |            |   |        |   |            -----        -----      "};
 //거미 보스 스킬 새끼거미 생성 
-char figure_spider_skill[] = {" *** *   **   **   * *** "};
+char figure_spider_skill[] ={"      ---        || |   | ||   | ||00 00|| | | | | 0 0 | | || |  -----  | |  | |() ()| |   |  ||   ||  | |  | |   | |  |  | |     | |  "};
 //아수라 스킬 검 떨어지기 
 char figure_sword[] ={"   =       =     #####  -------  |   |   | # |   | # |   | # |   | # |   | # |   | # |   | # |    | |      |    "};
 //인트로
@@ -195,14 +195,12 @@ void UpdateGame() {
    }
    
    
-   if(boss_skill_tick1 +5000 < tick && character.score >= 1800 && clear_boss == 0)
+   if(boss_skill_tick1 +3000 < tick && character.score >= 1800 && clear_boss == 0)
    {
 		boss_skill_tick1 = tick;
 		Create_Object(rand() % 90, 5, 500);
 		Create_Object(rand() % 90, 5, 500); 
-		Create_Object(rand() % 90, 5, 500); 
-		Create_Object(rand() % 90, 5, 500); 
-		Create_Object(rand() % 90, 5, 500);  
+  
    }
    
    if(boss_skill_tick2 +5000 < tick && character.score >= 6500 && clear_boss == 1)
@@ -561,11 +559,11 @@ void Create_Object(int x, int y, int kind) {      //x,y좌표에 kind값에 따라 오브
    //거미 보스 스킬 
    if(kind == 500) 
    {
-      	obj->hp[0] = 75;      //몬스터를 일단 kind100을 슬라임으로 해놨음 
+      	obj->hp[0] = 200;  
         obj->hp[1] = obj->hp[0];
        obj->exp = 0;
-       obj->size[0] = 5;
-        obj->size[1] = 5;
+       obj->size[0] = 15;
+        obj->size[1] = 6;
        obj->tick[1] = 0;
        obj->tick[2] = 1000;
        obj->tick[3] = 0;
