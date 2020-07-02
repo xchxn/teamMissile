@@ -72,7 +72,7 @@ char figure_spider_skill[] = {" *** *   **   **   * *** "};
 //아수라 스킬 검 떨어지기 
 char figure_sword[] ={"   =       =     #####  -------  |   |   | # |   | # |   | # |   | # |   | # |   | # |   | # |    | |      |    "};
 //엔딩 크레딧 
-char a[9][30]={"Team Missile","전북대학교","IT정보공학과","창의적IT공학설계입문","201515300 장우석","201912388 오준혁","201912430 조민서","201918800 정석찬","Thank you"};
+char End[9][30]={"Team Missile","전북대학교","IT정보공학과","창의적IT공학설계입문","201515300 장우석","201912388 오준혁","201912430 조민서","201918800 정석찬","Thank you"};
 
 void StartGame();	//초기 설정 
 void SetConsole();	//콘솔창 세팅  
@@ -105,7 +105,6 @@ void EndingCredit();
 int main()
 {
 	StartGame();
-
    while (TRUE) {
       if (tick +30 < GetTickCount()) {   //30ms에 한번씩 updategame되도록 설정   
          tick = GetTickCount();         //컴퓨터 부팅 후 경과한 시간을 ms로 반환. 따라서 tick은 1초에 1000씩 증가함 
@@ -827,43 +826,45 @@ void Goto(int x,int y)
 }
 void PrintEnding(int n,int x,int y)
 {
-	Goto(x,y);
 	for(int i=0;i<n;i++){
-		printf("\t\t\t%s\n",a[i]);
+		Goto(x,y+i);
+		printf("\t\t\t%s",End[i]);
+		printf("\n");
 	}
-	Sleep(700);
+	Sleep(1000);
 	system("cls");
 }
 void PrintEnding2(int n,int x,int y)
 {
-	Goto(x,y);
 	for(int i=n;i<9;i++){
-		printf("\t\t\t%s\n",a[i]);
+		Goto(x,y+i);
+		printf("\t\t\t%s",End[i]);
+		printf("\n");
 	}
-	Sleep(700);
+	Sleep(1000);
 	system("cls");
 }
 
 void EndingCredit()
 {	
 	textcolor(0,15);
-	PrintEnding(0,1,19);
-	PrintEnding(1,1,18);
-	PrintEnding(2,1,17);
-	PrintEnding(3,1,16);
-	PrintEnding(4,1,15);
-	PrintEnding(5,1,14);
-	PrintEnding(6,1,13);
-	PrintEnding(7,1,12);
-	PrintEnding(8,1,11);
-	PrintEnding(9,1,10);
-	PrintEnding2(0,1,9);
-	PrintEnding2(1,1,8);
-	PrintEnding2(2,1,7);
-	PrintEnding2(3,1,6);
-	PrintEnding2(4,1,5);
-	PrintEnding2(5,1,4);
-	PrintEnding2(6,1,3);
-	PrintEnding2(7,1,2);
-	PrintEnding2(8,1,1);
+	PrintEnding(0,28,23);
+	PrintEnding(1,28,22);
+	PrintEnding(2,28,21);
+	PrintEnding(3,28,20);
+	PrintEnding(4,28,19);
+	PrintEnding(5,28,18);
+	PrintEnding(6,28,17);
+	PrintEnding(7,28,16);
+	PrintEnding(8,28,15);
+	PrintEnding(9,28,14);
+	PrintEnding2(0,28,13);
+	PrintEnding2(1,28,12);
+	PrintEnding2(2,28,11);
+	PrintEnding2(3,28,10);
+	PrintEnding2(4,28,9);
+	PrintEnding2(5,28,8);
+	PrintEnding2(6,28,7);
+	PrintEnding2(7,28,6);
+	PrintEnding2(8,28,5);
 }
