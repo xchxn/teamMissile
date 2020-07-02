@@ -14,42 +14,42 @@ char h[111]={" ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á          ¡á          ¡á¡á¡á¡á¡á¡á¡á¡á¡á     
 void PrintLogo()
 {
 	
-	cout<<"\n\n\n ";
+	printf("\n\n\n ");
 		
 	for(int i=0;i<111;i++){ 
-		cout<<a[i];
+		printf("%c",a[i]);
 		Sleep(5);
 	}
 	for(int i=0;i<111;i++){
-		cout<<b[i];
+		printf("%c",b[i]);
 		Sleep(5);
 	}
 	for(int i=0;i<111;i++){
-		cout<<c[i];
+		printf("%c",c[i]);
 		Sleep(5);
 	}
 	for(int i=0;i<111;i++){
-		cout<<d[i];
+		printf("%c",d[i]);
 		Sleep(5);
 	}
 	for(int i=0;i<111;i++){
-		cout<<e[i];
+		printf("%c",e[i]);
 		Sleep(5);
 	}
 	for(int i=0;i<111;i++){
-		cout<<f[i];
+		printf("%c",f[i]);
 		Sleep(5);
 	}
 	for(int i=0;i<111;i++){
-		cout<<g[i];
+		printf("%c",g[i]);
 		Sleep(5);
 	}
 	for(int i=0;i<111;i++){
-		cout<<h[i];
+		printf("%c",h[i]);
 		Sleep(5);
 	}
 }
-int main(void)
+int main()
 {
 	PrintLogo();
 }
