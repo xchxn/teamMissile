@@ -71,6 +71,8 @@ char figure_asura[] ={"   ^    |   ------   |    ^     / |    | |  || =| |    | 
 char figure_spider_skill[] = {" *** *   **   **   * *** "};
 //¾Æ¼ö¶ó ½ºÅ³ °Ë ¶³¾îÁö±â 
 char figure_sword[] ={"   =       =     #####  -------  |   |   | # |   | # |   | # |   | # |   | # |   | # |   | # |    | |      |    "};
+//¿£µù Å©·¹µ÷ 
+char a[9][30]={"Team Missile","ÀüºÏ´ëÇÐ±³","ITÁ¤º¸°øÇÐ°ú","Ã¢ÀÇÀûIT°øÇÐ¼³°èÀÔ¹®","201515300 Àå¿ì¼®","201912388 ¿ÀÁØÇõ","201912430 Á¶¹Î¼­","201918800 Á¤¼®Âù","Thank you"};
 
 void StartGame();	//ÃÊ±â ¼³Á¤ 
 void SetConsole();	//ÄÜ¼ÖÃ¢ ¼¼ÆÃ  
@@ -94,6 +96,11 @@ void Control_Particle(int index);
 void Control_Object();   //¸ðµç ¿ÀºêÁ§Æ® ÄÁÆ®·Ñ ÇÔ¼ö
 void Remove_Object(int index);      //object[index] ¸Þ¸ð¸® ÇØÁ¦ ÈÄ NULL·Î ÃÊ±âÈ­ : ´Ù¸¥ ¿ÀºêÁ§Æ®¸¦ À§ÇÑ Å©±â ¸¸µé±â À§ÇÔ 
 void textcolor(int foreground, int background);   //ÅØ½ºÆ®ÄÃ·¯
+//¿£µù Å©·¹µ÷ 
+void Goto(int x,int y);
+void PrintEnding(int n,int x,int y);
+void PrintEnding2(int n,int x,int y);
+void EndingCredit();
 
 int main()
 {
@@ -109,7 +116,10 @@ int main()
             break;
         
         if (clear_boss == 2)			//¾Æ¼ö¶ó º¸½º ÀâÀ¸¸é ¿£µù 
+        {
+        	EndingCredit();
         	break;
+		}	
       }
    }
    
@@ -807,4 +817,52 @@ void Remove_Object(int index) {      //object[index] ¸Þ¸ð¸® ÇØÁ¦ ÈÄ NULL·Î ÃÊ±âÈ
 void textcolor(int foreground, int background) { 
    int color=foreground+background*16; 
    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color); 
+}
+
+void Goto(int x,int y)
+{
+    COORD pos={x,y};
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
+}
+void PrintEnding(int n,int x,int y)
+{
+	Goto(x,y);
+	for(int i=0;i<n;i++){
+		printf("\t\t\t%s\n",a[i]);
+	}
+	Sleep(700);
+	system("cls");
+}
+void PrintEnding2(int n,int x,int y)
+{
+	Goto(x,y);
+	for(int i=n;i<9;i++){
+		printf("\t\t\t%s\n",a[i]);
+	}
+	Sleep(700);
+	system("cls");
+}
+
+void EndingCredit()
+{	
+	textcolor(0,15);
+	PrintEnding(0,1,19);
+	PrintEnding(1,1,18);
+	PrintEnding(2,1,17);
+	PrintEnding(3,1,16);
+	PrintEnding(4,1,15);
+	PrintEnding(5,1,14);
+	PrintEnding(6,1,13);
+	PrintEnding(7,1,12);
+	PrintEnding(8,1,11);
+	PrintEnding(9,1,10);
+	PrintEnding2(0,1,9);
+	PrintEnding2(1,1,8);
+	PrintEnding2(2,1,7);
+	PrintEnding2(3,1,6);
+	PrintEnding2(4,1,5);
+	PrintEnding2(5,1,4);
+	PrintEnding2(6,1,3);
+	PrintEnding2(7,1,2);
+	PrintEnding2(8,1,1);
 }
