@@ -63,7 +63,7 @@ char figure_weapon[2][2][4] =
 const char figure_invenWeapon[2][11] = {"   /   /  ","  |   \"+\" "};  
 
 //몬스터 모양 
-char figure_enemy1[2][13] = {" __ (**)----", " __ [  ]\'--\'"};
+char figure_enemy1[2][13] = {" __ (**)----", " __ [xx]\'--\'"};
 //보스 거미 모양 
 char figure_spider[] ="|                | |      ##      |  --    {  }    --    |  {    }  |      |-{  --  }-|        { ---- }     |  --{ ---- }--  | -/  {  --  }  \\-     / {    } \\       / { 0000 } \\     -   { 00 }   -   |  /{      }\\  | |  |  \\()()/  |  ||  |   ||||   |  || /    \\/\\/    \\ || |            | |  |            |    |            |  ";
 //보스 아수라 모양 
@@ -81,6 +81,12 @@ char Main_5[111]={"       ■    ■                                ■    ■    ■
 char Main_6[111]={"       ■    ■        ■■■■■■■■■        ■■      ■                 ■                   ■■■■■\n"};
 char Main_7[111]={"       ■    ■                ■                          ■                 ■                   ■      ■\n"};
 char Main_8[111]={" ■■■■■■■■■■          ■          ■■■■■■■■■         ■■■■■■■■■           ■■■■■\n"}; 
+//게임오버
+char Gameover_1[110]={" ■■■        ■        ■■■■■      ■■■■     ■■■■   ■      ■  ■■■■  ■■■■   \n"};
+char Gameover_2[110]={"■             ■■      ■  ■  ■    ■          ■      ■   ■    ■  ■        ■     ■ \n"};
+char Gameover_3[110]={"■            ■  ■    ■  ■  ■    ■■■■    ■      ■    ■  ■   ■■■■  ■■■■  \n"};
+char Gameover_4[110]={"■   ■■    ■■■■   ■  ■  ■    ■          ■      ■     ■■     ■        ■     ■ \n"};
+char Gameover_5[110]={"  ■■  ■  ■     ■  ■  ■  ■    ■■■■     ■■■■        ■      ■■■■  ■      ■\n"};
 //엔딩 크레딧 
 char End[9][30]={"Team Missile","전북대학교","IT정보공학과","창의적IT공학설계입문","201515300 장우석","201912388 오준혁","201912430 조민서","201918800 정석찬","Thank you"};
 
@@ -116,20 +122,24 @@ void Goto(int x,int y);
 void PrintEnding(int n,int x,int y);
 void PrintEnding2(int n,int x,int y);
 void EndingCredit();
+//게임오버 화면 
+void PrintGameover();
 
 int main()
 {	
 	Intro();
 	StartGame();
-   while (TRUE) {
+    while (TRUE) {
       if (tick +30 < GetTickCount()) {   //30ms에 한번씩 updategame되도록 설정   
          tick = GetTickCount();         //컴퓨터 부팅 후 경과한 시간을 ms로 반환. 따라서 tick은 1초에 1000씩 증가함 
          
          UpdateGame();
 
-         if (tick == 0)               //character의 hp[1]이 1미만이 되면 tick = 0 
-            break;
-        
+        if (tick == 0)               //character의 hp[1]이 1미만이 되면 tick = 0 
+        {
+			PrintGameover();
+			break;
+        }
         if (clear_boss == 2)			//아수라 보스 잡으면 엔딩 
         {
         	EndingCredit();
@@ -195,7 +205,7 @@ void UpdateGame() {
    }
    
    
-   if(boss_skill_tick1 +3000 < tick && character.score >= 1800 && clear_boss == 0)
+   if(boss_skill_tick1 +4000 < tick && character.score >= 1800 && clear_boss == 0)
    {
 		boss_skill_tick1 = tick;
 		Create_Object(rand() % 90, 5, 500);
@@ -556,10 +566,10 @@ void Create_Object(int x, int y, int kind) {      //x,y좌표에 kind값에 따라 오브
       	obj->size[1] = 30;
    }
    
-   //거미 보스 스킬 
+   //거미 보스 스킬 (새끼거미 몬스터)
    if(kind == 500) 
    {
-      	obj->hp[0] = 200;  
+      	obj->hp[0] = 150;  
         obj->hp[1] = obj->hp[0];
        obj->exp = 0;
        obj->size[0] = 15;
@@ -758,12 +768,12 @@ void Control_Enemy(int index) {
          objects[index]->tick[2] = 1000 + rand()%2000;   //if문이 1초+(0~2초)에 한번씩 실행. 따라서 각 슬라임이 0~3초에 한번씩 움직임 
          
          //새끼거미 y가속도 설정(점프) 
-         objects[index]->accel[1] = - 0.75;
+         objects[index]->accel[1] = -2.5;
          //새끼거미 x가속도 설정(x축 이동) 
          if (Enemy_Position(x,  objects[index]->size[0]))
-            objects[index]->accel[0] = 1.5;
+            objects[index]->accel[0] = 2;
          else
-            objects[index]->accel[0] = -1.5;
+            objects[index]->accel[0] = -2;
       }
     Draw_Figure(x, y, objects[index]->size[0], objects[index]->size[1], figure_spider_skill);
     Movement_Control(objects[index]->position, objects[index]->accel, objects[index]->size, &objects[index]->flyTime); //중력 
@@ -839,35 +849,35 @@ void PrintLogo()
 		
 	for(int i=0;i<111;i++){ 
 		printf("%c",Main_1[i]);
-		Sleep(5);
+		Sleep(2);
 	}
 	for(int i=0;i<111;i++){
 		printf("%c",Main_2[i]);
-		Sleep(5);
+		Sleep(2);
 	}
 	for(int i=0;i<111;i++){
 		printf("%c",Main_3[i]);
-		Sleep(5);
+		Sleep(2);
 	}
 	for(int i=0;i<111;i++){
 		printf("%c",Main_4[i]);
-		Sleep(5);
+		Sleep(2);
 	}
 	for(int i=0;i<111;i++){
 		printf("%c",Main_5[i]);
-		Sleep(5);
+		Sleep(2);
 	}
 	for(int i=0;i<111;i++){
 		printf("%c",Main_6[i]);
-		Sleep(5);
+		Sleep(2);
 	}
 	for(int i=0;i<111;i++){
 		printf("%c",Main_7[i]);
-		Sleep(5);
+		Sleep(2);
 	}
 	for(int i=0;i<111;i++){
 		printf("%c",Main_8[i]);
-		Sleep(5);
+		Sleep(3);
 	}
 }
 void Loading()
@@ -943,3 +953,34 @@ void EndingCredit()
 	PrintEnding2(7,28,6);
 	PrintEnding2(8,28,5);
 }
+//게임오버 화면
+void PrintGameover()
+{	
+	system("cls");
+	
+	for(int i=0;i<111;i++){ 
+		Goto(3+i,14);
+		printf("%c",Gameover_1[i]);
+		Sleep(3);
+	}
+	for(int i=0;i<111;i++){
+		Goto(3+i,15);
+		printf("%c",Gameover_2[i]);
+		Sleep(3);
+	}
+	for(int i=0;i<111;i++){
+		Goto(3+i,16);
+		printf("%c",Gameover_3[i]);
+		Sleep(3);
+	}
+	for(int i=0;i<111;i++){
+		Goto(3+i,17);
+		printf("%c",Gameover_4[i]);
+		Sleep(3);
+	}
+	for(int i=0;i<111;i++){
+		Goto(3+i,18);
+		printf("%c",Gameover_5[i]);
+		Sleep(3);
+	}
+} 
