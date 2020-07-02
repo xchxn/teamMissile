@@ -1,6 +1,5 @@
 #include <iostream>
 #include <windows.h>
-
 using namespace std;
 
 char a[111]={"   ¡á¡á¡á¡á¡á¡á¡á¡á            ¡á                ¡á¡á      ¡á           ¡á¡á¡á¡á¡á¡á¡á         ¡á¡á        ¡á\n"};
@@ -50,7 +49,7 @@ void PrintLogo()
 		Sleep(5);
 	}
 }
-int main()
+int main(void)
 {
 	PrintLogo();
 }
