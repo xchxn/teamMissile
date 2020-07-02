@@ -388,7 +388,8 @@ void Control_Character()
 			character.accel[1] = -1.75;
 	
 	Movement_Control(character.position, character.accel, character.size, &character.flyTime);	// control character movement  중력구현 
-	
+	//캐릭터 머리위에 이름 
+	Draw_Figure(character.position[0]+1-strlen(character.name)/2,character.position[1]-2,strlen(character.name),1,character.name);
 	//캐릭터 그리는 부분 
 	if (character.tick[3] % 2 == 0) {		//무적tick이 짝수면 (무적tick이 100에서 1씩 계속 줄어듬. 따라서 캐릭터가 깜빡이게 됌)
 		Draw_Figure(character.position[0], character.position[1], character.size[0], character.size[1], figure_character);	//캐릭터 그림 
