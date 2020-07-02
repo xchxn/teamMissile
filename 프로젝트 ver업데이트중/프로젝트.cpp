@@ -818,7 +818,7 @@ void textcolor(int foreground, int background) {
    int color=foreground+background*16; 
    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color); 
 }
-
+//엔딩크레딧용 함수들 
 void Goto(int x,int y)
 {
     COORD pos={x,y};
