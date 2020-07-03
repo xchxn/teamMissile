@@ -16,7 +16,7 @@ void PrintEnding(int n,int x,int y)
 {
 	Goto(x,y);
 	for(int i=0;i<n;i++){
-		cout<<"\t\t\t"<<a[i]<<"\n";
+		printf("\t\t\t%s\n",a[i]);
 	}
 	Sleep(1000);
 	system("cls");
@@ -25,7 +25,7 @@ void PrintEnding2(int n,int x,int y)
 {
 	Goto(x,y);
 	for(int i=n;i<STRINGSIZE;i++){
-		cout<<"\t\t\t"<<a[i]<<"\n";
+		printf("\t\t\t%s\n",a[i]);
 	}
 	Sleep(1000);
 	system("cls");

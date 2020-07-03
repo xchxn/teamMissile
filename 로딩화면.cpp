@@ -86,17 +86,8 @@ void PrintLogo2()
 		cout<<h[i];
 	}
 }
+
 void Loading()
-{
-	for(int i=0;i<=100;i=i+3){
-		system("cls");
-		PrintLogo2();
-		Goto(40,24);
-		cout<<"Loading..."<<i<<"% now";
-		Sleep(10);
-	}
-}
-void LoadEnd()
 {
 	system("cls");
 	PrintLogo2();
@@ -110,6 +101,5 @@ int main()
 {
 	PrintLogo();
 	Loading();
-	LoadEnd();
 }
 
